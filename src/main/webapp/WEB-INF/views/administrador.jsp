@@ -53,15 +53,25 @@
 
 				<ul class="nav nav-pills flex-column sidebar-nav">
 					<li class="nav-item"><a class="nav-link active"
-						href="<c:url value="administrador"/>"><em class="fa fa-user-circle mr-1"></em>
-							Editar Usuarios <span class="sr-only">(current)</span></a></li>
+						href="<c:url value="administrador"/>"><em
+							class="fa fa-user-circle mr-1"></em> Editar Usuarios <span
+							class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/editarAdmin"/>"><em class="fa fa-cog mr-1"></em>
-							Editar Perfil</a></li>
+						href="<c:url value="/editarAdmin"/>"><em
+							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/gestionPistas"/>"><em class="fa fa-cog mr-1"></em>
-							Gestionar Pistas</a></li>
-					
+						href="<c:url value="/gestionPistas"/>"><em
+							class="fa fa-cog mr-1"></em> Gestionar Pistas</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/creaTorneo"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Creación
+							Torneo
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/clasificacion"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
+					</a></li>
+
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em

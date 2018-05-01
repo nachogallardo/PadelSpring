@@ -28,7 +28,18 @@ public class Clasificacion implements Serializable{
 	private Usuarios usuario;
 	
 	
-	
+	public Clasificacion() {
+		super();
+	}
+
+
+	public Clasificacion(int puntos, int partJugados, Torneo torneo, Usuarios usuario) {
+		super();
+		this.puntos = puntos;
+		this.partJugados = partJugados;
+		this.torneo = torneo;
+		this.usuario = usuario;
+	}
 	
 	
 	public Usuarios getUsuario() {
@@ -62,13 +73,8 @@ public class Clasificacion implements Serializable{
 	public void setTorneo(Torneo torneo) {
 		this.torneo = torneo;
 	}
-	public Clasificacion(int puntos, int partJugados, Torneo torneo, Usuarios usuario) {
-		super();
-		this.puntos = puntos;
-		this.partJugados = partJugados;
-		this.torneo = torneo;
-		this.usuario = usuario;
-	}
+	
+	
 	
 	
 }

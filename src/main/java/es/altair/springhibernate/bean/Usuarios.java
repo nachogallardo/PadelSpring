@@ -44,6 +44,8 @@ public class Usuarios implements Serializable{
 	@OneToMany(mappedBy = "usuario")
 	private Set<Clasificacion> clasificacion = new HashSet<Clasificacion>();
 	
+	
+	
 	public Usuarios() {
 		super();
 	}
@@ -112,6 +114,18 @@ public class Usuarios implements Serializable{
 
 
 	
+
+
+	public Set<Clasificacion> getClasificacion() {
+		return clasificacion;
+	}
+
+
+	public void setClasificacion(Set<Clasificacion> clasificacion) {
+		this.clasificacion = clasificacion;
+	}
+
+
 
 
 	public Set<Partidos> getPartidos1() {

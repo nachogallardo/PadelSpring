@@ -66,7 +66,11 @@ function validarTelefono() {
 						href="<c:url value="usuario"/>"><em class="fa fa-user-circle mr-1"></em> Principal
 							<span class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link active" href="<c:url value="/editar"/>"><em
-							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>					
+							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>		
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/clasificacion"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
+					</a></li>			
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>

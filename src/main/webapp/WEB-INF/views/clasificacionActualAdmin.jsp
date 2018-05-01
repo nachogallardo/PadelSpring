@@ -3,21 +3,7 @@
 <%@page import="es.altair.springhibernate.bean.Usuarios"%>
 <html lang="en">
 <head>
-<script>
-function validarTelefono() {
-	var telefono = document.getElementById("telefono").value;
-	error = document.getElementById("telefonoError");
-	boton = document.getElementById("btnRegistrar");
-	if (telefono.length<9||telefono.length>9) {
-		error.innerHTML = "El telefono debe tener 9 digitos";
-		boton.disabled = true;
-	} else {
-		error.innerHTML = "";
-		boton.disabled = false;
-	}
 
-}
-</script>
 <meta charset="utf-8">
 
 <meta name="viewport"
@@ -69,38 +55,41 @@ function validarTelefono() {
 						href="<c:url value="administrador"/>"><em
 							class="fa fa-user-circle mr-1"></em> Editar Usuarios <span
 							class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link active"
+					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/editarAdmin"/>"><em
 							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/gestionPistas"/>"><em
 							class="fa fa-cog mr-1"></em> Gestionar Pistas</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/creaTorneo"/>">
-						<em class="fa fa-plus-circle" aria-hidden="true"></em> Creación Torneo</a></li>
-					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/creaTorneo"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Creación
+							Torneo
+					</a></li>
+					<li class="nav-item"><a class="nav-link active"
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
 					</a></li>
 
 				</ul>
 
-				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>
-					Cerrar Sesion</a>
+				<a href="<c:url value="/logout"/>" class="logout-button"><em
+					class="fa fa-power-off"></em> Cerrar Sesion</a>
 			</nav>
 
 			<main
 				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4">
 			<header class="page-header row justify-center">
 				<div class="col-md-6 col-lg-8">
-					<h1 class="float-left text-center text-md-left">Bienvenido ${usuLogeado.nombre }</h1>
+					<h1 class="float-left text-center text-md-left">Bienvenido
+						${usuLogeado.nombre }</h1>
 				</div>
 
 				<div
 					class="dropdown user-dropdown col-md-6 col-lg-4 text-center text-md-right">
-					<a class="btn btn-stripped dropdown-toggle"
-						href="#" id="dropdownMenuLink"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a class="btn btn-stripped dropdown-toggle" href="#"
+						id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
 
 
 						<div class="username mt-1">
@@ -113,83 +102,44 @@ function validarTelefono() {
 					<div class="dropdown-menu dropdown-menu-right"
 						style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink">
 						<a class="dropdown-item" href="<c:url value="/editarAdmin"/>"><em
-							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a class="dropdown-item" href="<c:url value="/logout"/>"><em
+							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a
+							class="dropdown-item" href="<c:url value="/logout"/>"><em
 							class="fa fa-power-off mr-1"></em> Cerrar Sesion</a>
 					</div>
-					
-					
-					
-					
-					
+
+
+
+
+
 				</div>
 
 				<div class="clear"></div>
 			</header>
-			<div style="margin-left: 15%;" class="col-md-6">
-			<div class="bg-success text-white text-center py-2">
-									<h3>
-										<i class="fa fa-address-card"></i> Editar
-									</h3>
-
-								</div>
-								<br>
-								<c:choose>
-								<c:when test="${info!=''}">
-								<div style="color: black;"
-									class="alert alert-warning alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">x</button>
-									<strong>Info!</strong>
-									${info }
-								</div>
-								</c:when>
-								</c:choose>
-								<c:url value="/editaPerfilAdministrador" var="edita"/>
-			<f:form role="form" commandName="usuario" method="POST" action="${edita }"
-									class="form-check">
-								<f:input style="display: none;" path="idUsuario" type="number" name="idUsuario"  required="required"
-												class="form-control" 
-												placeholder="Nombre"/>
-									<div class="form-group">
-										<div class="input-group">
-											<div class="input-group-addon bg-light">
-												<i class="fa fa-user text-primary"></i>
-											</div>
-											<f:input type="text" path="nombre" name="nombre" required="required"
-												class="form-control" 
-												placeholder="Nombre"/>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="input-group mb-2 mb-sm-0">
-											<div class="input-group-addon bg-light">
-												<i class="fa fa-envelope text-primary"></i>
-											</div>
-											<f:input type="email" path="email" name="email" required="required"
-												class="form-control" 
-												placeholder="Email"/>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="input-group mb-2 mb-sm-0">
-											<div class="input-group-addon bg-light">
-												<i class="fa fa-phone text-primary"></i>
-											</div>
-											<f:input type="number" path="telefono" id="telefono" onblur="validarTelefono()" name="telefono" required="required"
-												class="form-control" 
-												placeholder="telefono"/>
-										</div>
-									</div>
-									<p id="telefonoError" style="color: red; font-size: 12px;"></p>					
-									<button type="submit" id="btnRegistrar"
-										class="btn btn-info btn-block rounded-0 py-2">
-										<i class="fa fa-pencil" aria-hidden="true"></i> Enviar
-									</button>
-								</f:form>
-								
-			</div>
-
 			
+			<div style="margin-left: 15%;" class="col-md-6">
+			<div class="row"><h3>Torneo: ${nombreTorneo }</h3></div>
+			<div class="row">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Nombre</th>
+							<th scope="col">Puntos</th>
+							<th scope="col">Partidos Jugados</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${clasificacion}" var="c">
+							<tr>
+								<td>${ c.nombre}</td>
+								<td>${ c.puntos}</td>
+								<td>${c.partJugados}</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+</div>
+
+			</div>
 		</div>
 	</div>
 

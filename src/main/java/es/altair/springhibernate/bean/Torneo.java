@@ -23,6 +23,8 @@ public class Torneo implements Serializable{
 	@OneToMany(mappedBy="idTorneo1",cascade=CascadeType.ALL)
 	private Set<Partidos> partidos;
 	
+	
+	
 	public int getIdTorneo() {
 		return idTorneo;
 	}
@@ -52,5 +54,9 @@ public class Torneo implements Serializable{
 		super();
 		this.nombre = nombre;
 	}
+	public Torneo() {
+		super();
+	}
+	
 	
 }

@@ -1,5 +1,7 @@
 package es.altair.springhibernate.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,23 +16,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.altair.springhibernate.bean.Pistas;
+import es.altair.springhibernate.bean.Torneo;
 import es.altair.springhibernate.bean.Usuarios;
 import es.altair.springhibernate.dao.PistasDao;
+import es.altair.springhibernate.dao.TorneoDao;
 import es.altair.springhibernate.dao.UsuariosDao;
 
 
 
 @Controller
-public class PadelController {
+public class UsuarioController {
 	@Autowired
 	private UsuariosDao usuariosDao;
 	@Autowired
-	private PistasDao pistasDao;
+	private TorneoDao torneoDao;
 	
 	@RequestMapping(value="/",method=RequestMethod.GET)
-	public ModelAndView inicio(@RequestParam(value="fallo",required=false,defaultValue="") String fallo,Model model,@RequestParam(value="mensaje",required=false,defaultValue="") String mensaje) {	
+	public ModelAndView inicio(HttpSession sesion,@RequestParam(value="fallo",required=false,defaultValue="") String fallo,Model model,@RequestParam(value="mensaje",required=false,defaultValue="") String mensaje) {	
 		model.addAttribute("mensaje",mensaje);
 		model.addAttribute("fallo",fallo);
+		List<Torneo> torneos= torneoDao.listarTorneos();
+		int idTorneo=0;
+		Torneo torneoActual=new Torneo();
+		for (Torneo torneo : torneos) {
+			if(torneo.getIdTorneo()>idTorneo) {
+				idTorneo=torneo.getIdTorneo();
+				torneoActual=torneo;
+			}
+		}
+		
+		sesion.setAttribute("torneo", torneoActual);
 		return new ModelAndView("index","usuario",new Usuarios());
 	}
 	@RequestMapping(value="/addUsuario", method=RequestMethod.POST)
@@ -109,53 +124,7 @@ public class PadelController {
 		model.addAttribute("listaUsuarios",usuariosDao.listarUsuarios());	
 		return "administrador";
 	}
-	@RequestMapping(value="/gestionPistas", method=RequestMethod.GET)
-	public ModelAndView gestionPistas(@RequestParam(value="info",required=false,defaultValue="")String info,Model model,HttpSession sesion) {
-		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
-		}
-		model.addAttribute("info",info);
-		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
-		model.addAttribute("listaPistas",pistasDao.listarPistas());	
-		return new ModelAndView("gestionarPistas","pista",new Pistas());
-	}
-	@RequestMapping(value="/addPista", method=RequestMethod.POST)
-	public String addPista(@ModelAttribute Pistas pista,Model model,HttpSession sesion) {
-		if(sesion.getAttribute("usuLogeado")==null) {
-			return "redirect:/";
-		}
-		int filas = 0;
-		String msg = "";		
-		
-		if (!pistasDao.validarPista(pista)) {
-			filas = pistasDao.insertar(pista);
-			if (filas == 1) {
-				msg = "Pista creada";
-				
-				return "redirect:/gestionPistas?info="+msg;
-			}
-			else {
-				msg = "Error al crear la pista";
-				
-				return "redirect:/gestionPistas?mensaje="+msg;
-			}
-		} else {
-			msg = "Nombre de pista ya registrado. Inténtelo con otro";
-			
-			return "redirect:/gestionPistas?info="+msg;
-		}
-	}
-	@RequestMapping(value="/borrarPista",method=RequestMethod.GET)
-	public String borrarPista(@RequestParam("idPista") String idPista, Model model,HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
-		if(sesion.getAttribute("usuLogeado")==null) {
-			return "redirect:/";
-		}
-		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
-		int id=Integer.parseInt(request.getParameter("idPista"));		
-		
-		pistasDao.borrarPista(id);
-		return "redirect:/gestionPistas";
-	}
+	
 	@RequestMapping(value="/borrarUsuario",method=RequestMethod.GET)
 	public String borrarUsuario(@RequestParam("idUsuario") String idUsuario, Model model,HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {

@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.log4j.helpers.DateTimeDateFormat;
 @Entity
 @Table(name="partidos")
 public class Partidos implements Serializable{
@@ -69,6 +71,8 @@ public class Partidos implements Serializable{
 	public Partidos() {
 		super();
 	}
+
+	
 
 	public Usuarios getIdJugador1() {
 		return idJugador1;

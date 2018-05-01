@@ -116,7 +116,10 @@
 							<span class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link" href="<c:url value="/editar"/>"><em
 							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
-							
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/clasificacion"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
+					</a></li>
 					
 				</ul>
 
