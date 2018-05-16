@@ -25,11 +25,13 @@ import es.altair.springhibernate.bean.Torneo;
 import es.altair.springhibernate.bean.Usuarios;
 import es.altair.springhibernate.dao.ClasificacionDao;
 import es.altair.springhibernate.dao.PistasDao;
+import es.altair.springhibernate.dao.TorneoDao;
 @Controller
 public class ClasificacionController {
 	@Autowired
 	private ClasificacionDao clasificacionDao;
-
+	@Autowired
+	private TorneoDao torneoDao;
 	@RequestMapping(value="/clasificacion", method=RequestMethod.GET)
 	public ModelAndView clasificacion(Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
@@ -47,6 +49,25 @@ public class ClasificacionController {
 		 return new ModelAndView("clasificacionActualAdmin","clasificacion",clasificacion);
 		else
 			return new ModelAndView("clasificacionActualUsuario","clasificacion",clasificacion);
+	}
+	
+	@RequestMapping(value="/otraClasificacion",method=RequestMethod.GET)
+	public ModelAndView editarOtroUsuario(@RequestParam("idTorneo") String idTorneo,Model model, HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return new ModelAndView("index","usuario",new Usuarios());
+		}
+		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		int id=Integer.parseInt(request.getParameter("idTorneo"));
+		Torneo t1=torneoDao.torneoPorId(id);
+		model.addAttribute("nombreTorneo",t1.getNombre());
+		List<Clasificacion> clasi =clasificacionDao.listarClasificacion(t1);
+		List<ClasificacionString> clasificacion = new ArrayList<ClasificacionString>();
+		for (Clasificacion clasificacion1 : clasi) {
+			
+			clasificacion.add(new ClasificacionString(clasificacion1.getUsuario().getNombre(), clasificacion1.getTorneo().getNombre(), clasificacion1.getPuntos(), clasificacion1.getPartJugados()));
+		}
+		
+		return new ModelAndView("clasificacionSegunTorneo","clasificacion",clasificacion);
 	}
 	
 }

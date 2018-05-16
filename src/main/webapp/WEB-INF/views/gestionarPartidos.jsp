@@ -1,14 +1,76 @@
 <!DOCTYPE html>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="es.altair.springhibernate.dao.UsuariosDaoImp"%>
-<%@page import="es.altair.springhibernate.dao.UsuariosDao"%>
+
+
 <%@page import="es.altair.springhibernate.bean.Usuarios"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <html lang="en">
 <head>
+<style>
+.title-header {
+	padding: .75rem 1.25rem;
+	background-color: #f5f5f5;
+	border-bottom: 1px solid transparent;
+}
+
+.title-header h3 {
+	font-size: 0.80rem;
+	margin: 0;
+}
+
+.movies {
+	margin-top: 2rem;
+}
+
+.img-card {
+	width: 100%;
+	margin-bottom: .40rem;
+}
+
+.movies {
+	margin-bottom: .60rem;
+}
+
+.series {
+	margin-bottom: .60rem;
+}
+
+.footer {
+	padding: 1rem 0;
+	margin-top: 2rem;
+	font-size: 80%;
+	text-align: left;
+}
+
+.footer p {
+	margin: 0;
+}
+
+.footer-links {
+	padding-left: 0;
+	margin-bottom: 1rem;
+}
+
+.footer-links li {
+	display: inline-block;
+}
+
+.footer a {
+	font-weight: 500;
+	color: inherit;
+}
+
+.footer-links li+li {
+	margin-left: 1rem;
+}
+/* Bug Bootstrap V4.0.6 - Mobile - SCSS _navbar*/
+.navbar {
+	display: block;
+}
+</style>
 <meta charset="utf-8">
 
 <meta name="viewport"
@@ -20,11 +82,8 @@
 
 
 
-
-
 <title>Padel</title>
-
-<link rel="icon" href="<c:url value="/resources/images/favicon.ico"/>">
+<link rel="icon" href="<c:url value="/resourcesimages/favicon.ico"/>">
 <!-- Bootstrap core CSS -->
 <link href="<c:url value="/resources/dist/css/bootstrap.min.css"/>" rel="stylesheet">
 
@@ -45,7 +104,8 @@
 			<nav
 				class="sidebar col-xs-12 col-sm-4 col-lg-3 col-xl-2 bg-faded sidebar-style-1">
 				<h1 class="site-title">
-					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em> Padel</a>
+					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em>
+						Padel</a>
 				</h1>
 
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><em
@@ -71,11 +131,6 @@
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
 					</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/gestionarPartidos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
-					</a></li>
-
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em
@@ -86,8 +141,7 @@
 				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4">
 			<header class="page-header row justify-center">
 				<div class="col-md-6 col-lg-8">
-					<h1 class="float-left text-center text-md-left">
-						Bienvenido
+					<h1 class="float-left text-center text-md-left">Bienvenido
 						${usuLogeado.nombre }</h1>
 				</div>
 
@@ -107,109 +161,70 @@
 
 					<div class="dropdown-menu dropdown-menu-right"
 						style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink">
-						<a class="dropdown-item" href="<c:url value="/editarAdmin"/>"><em
+						<a class="dropdown-item" href="<c:url value="/editar"/>"><em
 							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a
 							class="dropdown-item" href="<c:url value="/logout"/>"><em
 							class="fa fa-power-off mr-1"></em> Cerrar Sesion</a>
+
 					</div>
 				</div>
-
 				<div class="clear"></div>
 			</header>
-
-
-			<div class="section">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<table class="table table-hover table-striped">
-								<tbody>
-									<c:forEach items="${listaUsuarios}" var="u">
-									<tr>
-										<td><img
-											src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png"
-											class="img-circle" width="60"></td>
-										<td>
-											<h4>
-												<b>${u.nombre }</b>
-											</h4>
-											
-										</td>
-
-										<td>
-											<h4>
-												<b>${u.telefono }</b>
-											</h4> <a href="#"> ${u.email }</a>
-										</td>
-										<td>
-										<a data-toggle="modal" data-target="#borrarUsuario${u.idUsuario }">
-												<button class="btn btn-outline-danger" value="left"
-													type="button">
-													<i class="fa fa-fw s fa-remove"></i>Eliminar
-												</button>
-										</a></td>
-										<td><a
-											href="<c:url value="/editarOtroUsuario?idUsuario=${u.idUsuario }"/>">
-												<button class="btn btn-outline-info" value="right"
-													type="button">
-													<i class="fa fa-fw fa-cog"></i>Configurar
-												</button>
-										</a></td>
-
-
-
-										<div class="modal fade"
-											id="borrarUsuario${u.idUsuario }" tabindex="-1"
-											role="dialog" aria-labelledby="exampleModalLabel"
-											aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="exampleModalLabel">Borrar
-															Usuario</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">¿Estás seguro de borrar el
-														usuario?</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">No</button>
-														<button type="button" class="btn btn-primary"
-															onclick="location.href='<c:url value="/borrarUsuario?idUsuario=${u.idUsuario }"/>'">Sí</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
-									</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</div>
+			<div class="row">
+				<c:forEach items="${listaPartidos}" var="p">
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<article class="card">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+									<h5 class="tagline card-text text-xs-center"
+										style="text-align: center;">${p.jug1 } y ${p.jug2 }</h5>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Pista: ${p.pista }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Jornada: ${p.numJornada }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio }
+										${p.hora }:${p.minutos }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+									<h5 class="tagline card-text text-xs-center"
+										style="text-align: center;">${p.jug3 }y ${p.jug4 }</h5>
+								</div>
+							</div>
+							<div class="row">
+							<div class="col-4"></div>
+							<div class="col-4" style="margin-bottom: 2%;">
+								<a
+									href="<c:url value="/editarOtroUsuario?idUsuario=${u.idUsuario }"/>">
+									<button class="btn btn-outline-info" value="right"
+										type="button">
+										<i class="fa fa-fw fa-cog"></i>Gestionar
+									</button>
+								</a>
+								</div>
+							</div>
+						</article>
 					</div>
-				</div>
+				</c:forEach>
 			</div>
-
-
-			
 		</div>
 	</div>
-
-
-
-
-
-
-
-
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="<c:url value="/resources/js/jquery-3.2.1.min.js"/>"></script>
+		<script src="<c:url value="/resources/js/jquery-3.2.1.min.js"/>"></script>
 	<script src="<c:url value="/resources/dist/js/bootstrap.min.js"/>"></script>
 
 	<script src="<c:url value="/resources/js/chart.min.js"/>"></script>

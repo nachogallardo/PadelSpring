@@ -104,50 +104,45 @@
 			<nav
 				class="sidebar col-xs-12 col-sm-4 col-lg-3 col-xl-2 bg-faded sidebar-style-1">
 				<h1 class="site-title">
-					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em>
-						Padel</a>
+					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em> Padel</a>
 				</h1>
 
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><em
 					class="fa fa-bars"></em></a>
 
 				<ul class="nav nav-pills flex-column sidebar-nav">
-					<li class="nav-item"><a class="nav-link active"
-						href="<c:url value="usuario"/>"><em
-							class="fa fa-user-circle mr-1"></em> Principal <span
-							class="sr-only">(current)</span></a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/editar"/>"><em class="fa fa-cog mr-1"></em>
-							Editar Perfil</a></li>
+						href="<c:url value="usuario"/>"><em class="fa fa-user-circle mr-1"></em> Principal
+							<span class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link" href="<c:url value="/editar"/>"><em
+							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/clasificacion"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion
-							Actual
+							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
 					</a></li>
-					<li class="nav-item"><a class="nav-link"
+					<li class="nav-item"><a class="nav-link active"
 						href="<c:url value="/listaTorneos"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Torneos
 					</a></li>
-
+					
 				</ul>
 
-				<a href="<c:url value="/logout"/>" class="logout-button"><em
-					class="fa fa-power-off"></em> Cerrar Sesion</a>
+				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>
+					Cerrar Sesion</a>
 			</nav>
 
 			<main
 				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4">
 			<header class="page-header row justify-center">
 				<div class="col-md-6 col-lg-8">
-					<h1 class="float-left text-center text-md-left">Bienvenido
-						${usuLogeado.nombre }</h1>
+					<h1 class="float-left text-center text-md-left">Bienvenido ${usuLogeado.nombre }</h1>
 				</div>
 
 				<div
 					class="dropdown user-dropdown col-md-6 col-lg-4 text-center text-md-right">
-					<a class="btn btn-stripped dropdown-toggle" href="#"
-						id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="false">
+					<a class="btn btn-stripped dropdown-toggle"
+						href="#" id="dropdownMenuLink"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 
 						<div class="username mt-1">
@@ -160,49 +155,31 @@
 					<div class="dropdown-menu dropdown-menu-right"
 						style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink">
 						<a class="dropdown-item" href="<c:url value="/editar"/>"><em
-							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a
-							class="dropdown-item" href="<c:url value="/logout"/>"><em
+							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a class="dropdown-item" href="<c:url value="/logout"/>"><em
 							class="fa fa-power-off mr-1"></em> Cerrar Sesion</a>
-
+							
 					</div>
+					
+					
+					
+					
+					
 				</div>
+
 				<div class="clear"></div>
-			</header>
+			</header>						
 			<div class="row">
-				<c:forEach items="${listaPartidos}" var="p">
-					<div class="col-lg-6 col-md-6 col-sm-6">
-						<article class="card">
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
-									<h5 class="tagline card-text text-xs-center"
-										style="text-align: center;">${p.jug1 } y ${p.jug2 }</h5>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-12">
-									<p style="text-align: center;">Pista: ${p.pista }</p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-12">
-									<p style="text-align: center;">Jornada: ${p.numJornada }</p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-12">
-									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio }
-										${p.hora }:${p.minutos }</p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
-									<h5 class="tagline card-text text-xs-center"
-										style="text-align: center;">${p.jug3 } y ${p.jug4 }</h5>
-								</div>
-							</div>
-						</article>
+			<c:forEach items="${listaTorneos}" var="t">
+
+			<div class="col-lg-3 col-md-3 col-sm-3" style="margin-bottom: 10px;">
+				<article class="card">
+					<div class="card-block">
+						<h5 class="tagline card-text text-xs-center">${t.nombre }</h5>
+						<a href="<c:url value="/otraClasificacion?idTorneo=${t.idTorneo }"/>" class="btn btn-sm btn-primary btn-block">Clasificación</a>
 					</div>
-				</c:forEach>
+				</article>
+			</div>			
+			 </c:forEach>
 			</div>
 		</div>
 	</div>

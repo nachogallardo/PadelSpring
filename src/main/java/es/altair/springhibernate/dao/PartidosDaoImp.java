@@ -1,5 +1,8 @@
 package es.altair.springhibernate.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
@@ -28,5 +31,14 @@ private SessionFactory sessionFactory;
 		Session sesion=sessionFactory.getCurrentSession();
 		sesion.createSQLQuery("delete from partidos").executeUpdate();
 		
+	}
+
+	@Override
+	@Transactional
+	public List<Partidos> listarPartidos() {
+		Session sesion=sessionFactory.getCurrentSession();
+		List<Partidos> partidos= new ArrayList<Partidos>();
+		partidos=sesion.createQuery("from Partidos").list();
+		return partidos;
 	}
 }

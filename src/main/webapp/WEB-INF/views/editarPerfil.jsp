@@ -55,7 +55,7 @@ function validarTelefono() {
 			<nav
 				class="sidebar col-xs-12 col-sm-4 col-lg-3 col-xl-2 bg-faded sidebar-style-1">
 				<h1 class="site-title">
-					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em>> Padel</a>
+					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em> Padel</a>
 				</h1>
 
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><em
@@ -70,7 +70,11 @@ function validarTelefono() {
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
-					</a></li>			
+					</a></li>	
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/listaTorneos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Torneos
+					</a></li>		
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>

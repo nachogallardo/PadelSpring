@@ -14,4 +14,6 @@ public interface TorneoDao {
 
 	List<Torneo> listarTorneos();
 
+	Torneo torneoPorId(int id);
+
 }

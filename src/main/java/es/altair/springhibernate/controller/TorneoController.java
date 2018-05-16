@@ -69,6 +69,15 @@ public class TorneoController {
 		return new ModelAndView("crearTorneo","torneo",new Torneo());
 	}
 	
+	
+	@RequestMapping(value="/listaTorneos", method=RequestMethod.GET)
+	public ModelAndView listaTorneo(Model model,HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return new ModelAndView("index");
+		}		
+		return new ModelAndView("listarTorneos","listaTorneos",torneoDao.listarTorneos());
+	}
+	
 	@RequestMapping(value="/addTorneo", method=RequestMethod.POST)
 	public String addTorneo(HttpSession sesion,@ModelAttribute Torneo torneo,Model model,@RequestParam("jugones") String[] jugones) {
 		if(sesion.getAttribute("usuLogeado")==null) {

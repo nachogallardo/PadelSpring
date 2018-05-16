@@ -1,5 +1,6 @@
 package es.altair.springhibernate.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.altair.springhibernate.bean.PartidoString;
+import es.altair.springhibernate.bean.Partidos;
 import es.altair.springhibernate.bean.Pistas;
 import es.altair.springhibernate.bean.Torneo;
 import es.altair.springhibernate.bean.Usuarios;
+import es.altair.springhibernate.dao.PartidosDao;
 import es.altair.springhibernate.dao.PistasDao;
 import es.altair.springhibernate.dao.TorneoDao;
 import es.altair.springhibernate.dao.UsuariosDao;
@@ -30,6 +34,8 @@ public class UsuarioController {
 	private UsuariosDao usuariosDao;
 	@Autowired
 	private TorneoDao torneoDao;
+	@Autowired
+	private PartidosDao partidosDao;
 	
 	@RequestMapping(value="/",method=RequestMethod.GET)
 	public ModelAndView inicio(HttpSession sesion,@RequestParam(value="fallo",required=false,defaultValue="") String fallo,Model model,@RequestParam(value="mensaje",required=false,defaultValue="") String mensaje) {	
@@ -44,7 +50,13 @@ public class UsuarioController {
 				torneoActual=torneo;
 			}
 		}
-		
+		List<Partidos>parti=new ArrayList<Partidos>();
+		List<PartidoString> partidos= new ArrayList<PartidoString>();
+		parti=partidosDao.listarPartidos();
+		for (Partidos p : parti) {
+			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDay()-1,p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
+		}
+		sesion.setAttribute("listaPartidos", partidos);
 		sesion.setAttribute("torneo", torneoActual);
 		return new ModelAndView("index","usuario",new Usuarios());
 	}
@@ -107,13 +119,18 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value="/usuario", method=RequestMethod.GET)
-	public String usuarioNormal(Model model,HttpSession sesion) {
+	public ModelAndView usuarioNormal(Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return "redirect:/";
+			return new ModelAndView("index");
 		}
-		
+		List<Partidos>parti=new ArrayList<Partidos>();
+		List<PartidoString> partidos= new ArrayList<PartidoString>();
+		parti=partidosDao.listarPartidos();
+		for (Partidos p : parti) {
+			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDay()-1,p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
+		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
-		return "usuario";
+		return new ModelAndView("usuario","listaPartidos",partidos);
 	}
 	@RequestMapping(value="/administrador", method=RequestMethod.GET)
 	public String administrador(Model model,HttpSession sesion) {

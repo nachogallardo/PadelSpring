@@ -64,4 +64,13 @@ public class TorneoDaoImp implements TorneoDao {
 		List<Torneo> torneos= sesion.createQuery("from Torneo").list();
 		return torneos;
 	}
+
+	@Override
+	@Transactional
+	public Torneo torneoPorId(int id) {
+		Session sesion=sessionFactory.getCurrentSession();
+		Torneo t1=new Torneo();
+		t1= (Torneo)sesion.createQuery("from Torneo where idTorneo=:i").setParameter("i", id).uniqueResult();
+		return t1;
+	}
 }

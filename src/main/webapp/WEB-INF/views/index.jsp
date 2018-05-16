@@ -134,7 +134,42 @@
 				<div class="row">
 					<div class="col-md-8">
 						<div class="row">
-						 
+						 	
+				<c:forEach items="${listaPartidos}" var="p">
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<article class="card">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+									<h5 class="tagline card-text text-xs-center"
+										style="text-align: center;">${p.jug1 } y ${p.jug2 }</h5>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Pista: ${p.pista }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Jornada: ${p.numJornada }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio }
+										${p.hora }:${p.minutos }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+									<h5 class="tagline card-text text-xs-center"
+										style="text-align: center;">${p.jug3 } y ${p.jug4 }</h5>
+								</div>
+							</div>
+						</article>
+					</div>
+				</c:forEach>
+			
 							
 						</div>
 					</div>
