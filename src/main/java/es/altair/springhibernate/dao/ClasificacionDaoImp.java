@@ -37,6 +37,17 @@ private SessionFactory sessionFactory;
 		 clasificacion=sesion.createQuery("from Clasificacion where torneo =:i").setParameter("i", t1).list();
 		return clasificacion;
 	}
+	@Override
+	@Transactional
+	public void Editar(int puntos,int partJugados,int idTorneo,int idUsuario) {
+		Session sesion=sessionFactory.getCurrentSession();
+		sesion.createSQLQuery("UPDATE clasificacion SET puntos=:p, partJugados=:pj where idUsuario=:i and idTorneo=:t" )
+					.setParameter("p", puntos)
+					.setParameter("pj", partJugados)
+					.setParameter("i", idUsuario)
+					.setParameter("t", idTorneo)
+					.executeUpdate();	
+	}
 
 	
 }

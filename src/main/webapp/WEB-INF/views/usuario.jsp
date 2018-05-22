@@ -127,8 +127,11 @@
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/listaTorneos"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Torneos
-					</a></li>
-
+					</a></li>	
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/listaPagos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Ver mis pagos
+					</a></li>					
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em
@@ -168,6 +171,40 @@
 				</div>
 				<div class="clear"></div>
 			</header>
+			<div class="row">
+				<div class="col-6">
+					<p>Pagar la mensualidad del club:</p>
+					<form id="form2" action=<c:url value="/pagarMes"/>></form>								
+					<form id="form1" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+						target="_top" >
+						<input type="hidden" name="cmd" value="_s-xclick"> <input
+							type="hidden" name="hosted_button_id" value="3V4BERJLSCZ26">
+							
+						<input type="image"
+							src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_paynowCC_LG.gif"
+							border="0" name="submit"
+							alt="PayPal, la forma rápida y segura de pagar en Internet." formtarget="_blank">
+							
+						<img alt="" border="0"
+							src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif"
+							width="1" height="1">							
+					</form>	
+								
+					
+				</div>
+				<div class="col-6">
+					<c:choose>
+						<c:when test="${infoPago!=''}">
+							<div style="color: black;"
+								class="alert alert-warning alert-dismissable">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">x</button>
+								<strong>Info!</strong> ${infoPago }
+							</div>
+						</c:when>
+					</c:choose>
+				</div>
+			</div>
 			<div class="row">
 				<c:forEach items="${listaPartidos}" var="p">
 					<div class="col-lg-6 col-md-6 col-sm-6">
@@ -229,6 +266,10 @@
 				scaleFontColor : "#c5c7cc"
 			});
 		};
+		 $("#form1").on('submit', function(evt){
+			    evt.preventDefault();  
+			    $("#form2").submit();
+			 });
 	</script>
 
 	<script

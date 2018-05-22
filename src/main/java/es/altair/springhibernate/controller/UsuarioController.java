@@ -54,7 +54,7 @@ public class UsuarioController {
 		List<PartidoString> partidos= new ArrayList<PartidoString>();
 		parti=partidosDao.listarPartidos();
 		for (Partidos p : parti) {
-			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDay()-1,p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
+			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
 		}
 		sesion.setAttribute("listaPartidos", partidos);
 		sesion.setAttribute("torneo", torneoActual);
@@ -87,7 +87,6 @@ public class UsuarioController {
 	@RequestMapping(value="/inicioSesion", method=RequestMethod.POST)
 	public String login(@ModelAttribute Usuarios usu,HttpSession sesion) {
 		usu=usuariosDao.comprobarUsuario(usu.getNombre(), usu.getContrasenia());
-		
 		if (usu!=null) {
 			// Usuario correcto
 			// Poner al usuario en sesión
@@ -119,16 +118,17 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value="/usuario", method=RequestMethod.GET)
-	public ModelAndView usuarioNormal(Model model,HttpSession sesion) {
+	public ModelAndView usuarioNormal(@RequestParam(value="infoPago",required=false,defaultValue="") String infoPago,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}
 		List<Partidos>parti=new ArrayList<Partidos>();
 		List<PartidoString> partidos= new ArrayList<PartidoString>();
 		parti=partidosDao.listarPartidos();
 		for (Partidos p : parti) {
-			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDay()-1,p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
+			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
 		}
+		model.addAttribute("infoPago",infoPago);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("usuario","listaPartidos",partidos);
 	}
@@ -157,7 +157,7 @@ public class UsuarioController {
 	@RequestMapping(value="/editarAdmin",method= RequestMethod.GET)
 	public ModelAndView editarAdmin(@RequestParam(value="info",required=false,defaultValue="") String info,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index","usuario",new Usuarios());
+			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("info",info);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
@@ -201,7 +201,7 @@ public class UsuarioController {
 	@RequestMapping(value="/editar",method= RequestMethod.GET)
 	public ModelAndView editar(@RequestParam(value="info",required=false,defaultValue="") String info,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index","usuario",new Usuarios());
+			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("info",info);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
@@ -210,7 +210,7 @@ public class UsuarioController {
 	@RequestMapping(value="/editarOtroUsuario",method=RequestMethod.GET)
 	public ModelAndView editarOtroUsuario(@RequestParam("idUsuario") String idUsuario,Model model, HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index","usuario",new Usuarios());
+			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		int id=Integer.parseInt(request.getParameter("idUsuario"));		

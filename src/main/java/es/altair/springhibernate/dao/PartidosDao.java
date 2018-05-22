@@ -1,5 +1,6 @@
 package es.altair.springhibernate.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import es.altair.springhibernate.bean.Partidos;
@@ -13,4 +14,7 @@ public interface PartidosDao {
 
 	List<Partidos> listarPartidos();
 
+	void EditarGanadores(int idUsuario1, int idUsuario2,int idPartido);
+	
+	void EditarPartido(int idPartido,int idPista,Date fecha);
 }

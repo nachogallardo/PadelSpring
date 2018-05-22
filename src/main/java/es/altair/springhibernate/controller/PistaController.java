@@ -23,7 +23,7 @@ public class PistaController {
 	@RequestMapping(value="/gestionPistas", method=RequestMethod.GET)
 	public ModelAndView gestionPistas(@RequestParam(value="info",required=false,defaultValue="")String info,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}
 		model.addAttribute("info",info);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));

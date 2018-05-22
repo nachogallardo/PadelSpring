@@ -52,7 +52,7 @@ public class TorneoController {
 	@RequestMapping(value="/creaTorneo", method=RequestMethod.GET)
 	public ModelAndView crearTorneo(@RequestParam(value="info",required=false,defaultValue="")String info,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}
 		model.addAttribute("info",info);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
@@ -73,7 +73,7 @@ public class TorneoController {
 	@RequestMapping(value="/listaTorneos", method=RequestMethod.GET)
 	public ModelAndView listaTorneo(Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}		
 		return new ModelAndView("listarTorneos","listaTorneos",torneoDao.listarTorneos());
 	}

@@ -9,6 +9,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <html lang="en">
 <head>
+<script type="text/javascript">
+</script>
 <style>
 .title-header {
 	padding: .75rem 1.25rem;
@@ -104,7 +106,8 @@
 			<nav
 				class="sidebar col-xs-12 col-sm-4 col-lg-3 col-xl-2 bg-faded sidebar-style-1">
 				<h1 class="site-title">
-					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em> Padel</a>
+					<a href="#"><em class="fa fa-futbol-o" aria-hidden="true"></em>
+						Padel</a>
 				</h1>
 
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><em
@@ -112,41 +115,47 @@
 
 				<ul class="nav nav-pills flex-column sidebar-nav">
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="usuario"/>"><em class="fa fa-user-circle mr-1"></em> Principal
-							<span class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="<c:url value="/editar"/>"><em
+						href="<c:url value="administrador"/>"><em
+							class="fa fa-user-circle mr-1"></em> Editar Usuarios <span
+							class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/editarAdmin"/>"><em
 							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/gestionPistas"/>"><em
+							class="fa fa-cog mr-1"></em> Gestionar Pistas</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/creaTorneo"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Creación
+							Torneo
+					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
 					</a></li>
 					<li class="nav-item"><a class="nav-link active"
-						href="<c:url value="/listaTorneos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Torneos
+						href="<c:url value="/gestionarPartidos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/listaPagos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Ver mis pagos
-					</a></li>
-					
 				</ul>
 
-				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>
-					Cerrar Sesion</a>
+				<a href="<c:url value="/logout"/>" class="logout-button"><em
+					class="fa fa-power-off"></em> Cerrar Sesion</a>
 			</nav>
 
 			<main
 				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4">
 			<header class="page-header row justify-center">
 				<div class="col-md-6 col-lg-8">
-					<h1 class="float-left text-center text-md-left">Bienvenido ${usuLogeado.nombre }</h1>
+					<h1 class="float-left text-center text-md-left">Bienvenido
+						${usuLogeado.nombre }</h1>
 				</div>
 
 				<div
 					class="dropdown user-dropdown col-md-6 col-lg-4 text-center text-md-right">
-					<a class="btn btn-stripped dropdown-toggle"
-						href="#" id="dropdownMenuLink"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a class="btn btn-stripped dropdown-toggle" href="#"
+						id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
 
 
 						<div class="username mt-1">
@@ -155,35 +164,107 @@
 							<h6 class="text-muted">Opciones</h6>
 						</div>
 					</a>
-
 					<div class="dropdown-menu dropdown-menu-right"
 						style="margin-right: 1.5rem;" aria-labelledby="dropdownMenuLink">
 						<a class="dropdown-item" href="<c:url value="/editar"/>"><em
-							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a class="dropdown-item" href="<c:url value="/logout"/>"><em
+							class="fa fa-cog mr-1"></em> Editar Perfil</a> <a
+							class="dropdown-item" href="<c:url value="/logout"/>"><em
 							class="fa fa-power-off mr-1"></em> Cerrar Sesion</a>
-							
 					</div>
-					
-					
-					
-					
-					
 				</div>
-
 				<div class="clear"></div>
-			</header>						
-			<div class="row">
-			<c:forEach items="${listaTorneos}" var="t">
-
-			<div class="col-lg-3 col-md-3 col-sm-3" style="margin-bottom: 10px;">
-				<article class="card">
-					<div class="card-block">
-						<h5 class="tagline card-text text-xs-center">${t.nombre }</h5>
-						<a href="<c:url value="/otraClasificacion?idTorneo=${t.idTorneo }"/>" class="btn btn-sm btn-primary btn-block">Clasificación</a>
+			</header>
+			<div class="row">				
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="card border-primary rounded-0">
+							<div class="card-header p-0">
+								<div class="bg-primary text-white text-center py-2">
+									<h3>
+										 Editar Partido
+									</h3>
+								</div>
+							</div>
+							<div class="card-body p-3">
+								<c:choose>
+								<c:when test="${info!='' }">
+								<div style="color: black;"
+									class="alert alert-warning alert-dismissable">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-hidden="true">x</button>
+									<strong>Info!</strong>
+									${info }
+								</div>
+								</c:when>
+								</c:choose>							
+								<c:url value="/addPista" var="addPista"></c:url>
+								<f:form role="form" method="POST" action="${addPista }" commandName="pista"
+									class="form-check">
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon bg-light">
+												<i class="fa fa-user text-primary"></i>
+											</div>
+											<input type="text" id="datepicker"/>
+										</div>
+									</div>									
+									<button type="submit" id="btnRegistrar"
+										class="btn btn-primary btn-block rounded-0 py-2">
+										<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
+									</button>
+								</f:form>
+							</div>
+						</div>
 					</div>
-				</article>
-			</div>			
-			 </c:forEach>
+					<div class="col-lg-2 col-md-2 col-sm-2">
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="card border-primary rounded-0">
+							<div class="card-header p-0">
+								<div class="bg-primary text-white text-center py-2">
+									<h3>
+										 Ganadores Partido
+									</h3>
+								</div>
+							</div>
+							<div class="card-body p-3">
+							<c:choose>
+								<c:when test="${info!='' }">
+									<div style="color: black;"
+										class="alert alert-warning alert-dismissable">
+										<button type="button" class="close" data-dismiss="alert"
+											aria-hidden="true">x</button>
+										<strong>Info!</strong> ${info }
+									</div>
+								</c:when>
+							</c:choose>
+							<c:url value="/addPista" var="addPista"></c:url>
+							<f:form role="form" method="POST" action="${addPista }"
+								commandName="pista" class="form-check">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon bg-light">
+											<i class="fa fa-user text-primary"></i>
+										</div>
+										<div class="form-group">
+											<div class="input-group mb-2 mb-sm-0">
+
+												<input type="radio" name="tipode" id="administrador"
+													value="1" onchange="cambiar(this)" /> Administrador <br>
+												<input type="radio" name="tipode" id="usu" value="2"
+													onchange="cambiar(this)" /> Usuario
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<button type="submit" id="btnRegistrar"
+									class="btn btn-primary btn-block rounded-0 py-2">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
+								</button>
+							</f:form>
+						</div>
+						</div>
+					</div>
 			</div>
 		</div>
 	</div>

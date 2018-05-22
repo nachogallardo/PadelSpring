@@ -112,7 +112,7 @@
 					class="fa fa-bars"></em></a>
 
 				<ul class="nav nav-pills flex-column sidebar-nav">
-					<li class="nav-item"><a class="nav-link active"
+					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="administrador"/>"><em
 							class="fa fa-user-circle mr-1"></em> Editar Usuarios <span
 							class="sr-only">(current)</span></a></li>
@@ -130,6 +130,10 @@
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
+					</a></li>
+					<li class="nav-item"><a class="nav-link active"
+						href="<c:url value="/gestionarPartidos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
 				</ul>
 
@@ -192,21 +196,21 @@
 							</div>
 							<div class="row">
 								<div class="col-12">
-									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio }
+									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio } 
 										${p.hora }:${p.minutos }</p>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
 									<h5 class="tagline card-text text-xs-center"
-										style="text-align: center;">${p.jug3 }y ${p.jug4 }</h5>
+										style="text-align: center;">${p.jug3 } y ${p.jug4 }</h5>
 								</div>
 							</div>
 							<div class="row">
 							<div class="col-4"></div>
 							<div class="col-4" style="margin-bottom: 2%;">
 								<a
-									href="<c:url value="/editarOtroUsuario?idUsuario=${u.idUsuario }"/>">
+									href="<c:url value="/editarPartido?nombreJugador=${p.jug1 }"/>">
 									<button class="btn btn-outline-info" value="right"
 										type="button">
 										<i class="fa fa-fw fa-cog"></i>Gestionar

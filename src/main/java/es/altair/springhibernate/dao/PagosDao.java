@@ -1,5 +1,11 @@
 package es.altair.springhibernate.dao;
 
-public interface PagosDao {
+import java.util.List;
 
+import es.altair.springhibernate.bean.Pagos;
+
+public interface PagosDao {
+	void insert(Pagos p);
+
+	List<Pagos> listarPagos(int id);
 }

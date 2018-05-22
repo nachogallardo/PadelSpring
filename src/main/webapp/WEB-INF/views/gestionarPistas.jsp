@@ -83,6 +83,10 @@ function validarTelefono() {
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion
 							Actual
 					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/gestionarPartidos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
+					</a></li>
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em class="fa fa-power-off"></em>

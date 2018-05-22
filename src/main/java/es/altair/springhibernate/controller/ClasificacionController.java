@@ -35,7 +35,7 @@ public class ClasificacionController {
 	@RequestMapping(value="/clasificacion", method=RequestMethod.GET)
 	public ModelAndView clasificacion(Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}
 		List<Clasificacion> clasi =clasificacionDao.listarClasificacion(sesion.getAttribute("torneo"));
 		List<ClasificacionString> clasificacion = new ArrayList<ClasificacionString>();
@@ -52,9 +52,9 @@ public class ClasificacionController {
 	}
 	
 	@RequestMapping(value="/otraClasificacion",method=RequestMethod.GET)
-	public ModelAndView editarOtroUsuario(@RequestParam("idTorneo") String idTorneo,Model model, HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
+	public ModelAndView otraClasificacion(@RequestParam("idTorneo") String idTorneo,Model model, HttpServletResponse response, HttpServletRequest request,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index","usuario",new Usuarios());
+			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		int id=Integer.parseInt(request.getParameter("idTorneo"));

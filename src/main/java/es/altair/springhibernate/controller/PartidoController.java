@@ -27,7 +27,7 @@ public class PartidoController {
 	@RequestMapping(value="/gestionarPartidos", method=RequestMethod.GET)
 	public ModelAndView gestionarPartidos(Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
-			return new ModelAndView("index");
+			return new ModelAndView("redirect:/");
 		}
 		List<Partidos>parti=new ArrayList<Partidos>();
 		List<PartidoString> partidos= new ArrayList<PartidoString>();
@@ -37,6 +37,15 @@ public class PartidoController {
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("gestionarPartidos","listaPartidos",partidos);
+	}
+	@RequestMapping(value="/editarPartido", method=RequestMethod.GET)
+	public ModelAndView editarPartido(Model model,HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		return new ModelAndView("editarPartido");
 	}
 	
 }

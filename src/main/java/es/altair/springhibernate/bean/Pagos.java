@@ -21,14 +21,26 @@ public class Pagos implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date ultimoPago;
 	@ManyToOne
-	@JoinColumn(name="idUsuario")
+	@JoinColumn(name="idJugador")
 	private Usuarios usuario;
+	public Pagos(Date ultimoPago, Usuarios usuario) {
+		super();
+		this.ultimoPago = ultimoPago;
+		this.usuario = usuario;
+	}
+	
 	public Pagos(int idPago, Date ultimoPago, Usuarios usuario) {
 		super();
 		this.idPago = idPago;
 		this.ultimoPago = ultimoPago;
 		this.usuario = usuario;
 	}
+
+	
+	public Pagos() {
+		super();
+	}
+
 	public int getIdPago() {
 		return idPago;
 	}
