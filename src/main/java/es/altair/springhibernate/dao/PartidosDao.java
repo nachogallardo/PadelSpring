@@ -17,4 +17,8 @@ public interface PartidosDao {
 	void EditarGanadores(int idUsuario1, int idUsuario2,int idPartido);
 	
 	void EditarPartido(int idPartido,int idPista,Date fecha);
+	
+	Partidos partidoPorNombreJugador(String nombre);
+
+	Partidos partidoPorIdPartido(int idPartido);
 }

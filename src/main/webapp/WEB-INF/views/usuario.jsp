@@ -172,39 +172,45 @@
 				<div class="clear"></div>
 			</header>
 			<div class="row">
-				<div class="col-6">
-					<p>Pagar la mensualidad del club:</p>
-					<form id="form2" action=<c:url value="/pagarMes"/>></form>								
-					<form id="form1" action="https://www.paypal.com/cgi-bin/webscr" method="post"
-						target="_top" >
-						<input type="hidden" name="cmd" value="_s-xclick"> <input
-							type="hidden" name="hosted_button_id" value="3V4BERJLSCZ26">
-							
-						<input type="image"
-							src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_paynowCC_LG.gif"
-							border="0" name="submit"
-							alt="PayPal, la forma rápida y segura de pagar en Internet." formtarget="_blank">
-							
-						<img alt="" border="0"
-							src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif"
-							width="1" height="1">							
-					</form>	
-								
-					
-				</div>
-				<div class="col-6">
+			<div class="col-4"></div>
+				<div class="col-4">
 					<c:choose>
-						<c:when test="${infoPago!=''}">
-							<div style="color: black;"
-								class="alert alert-warning alert-dismissable">
-								<button type="button" class="close" data-dismiss="alert"
-									aria-hidden="true">x</button>
-								<strong>Info!</strong> ${infoPago }
+						<c:when test="${asistencia!=''}">
+							<a data-toggle="modal"
+								data-target="#asistencia">
+								<button class="btn btn-sm btn-outline-danger" value="left"
+									type="button">
+									Cancelar Asistencia al Partido
+								</button>
+							</a>
+							<div class="modal fade" id="asistencia"
+								tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Confirmar Asistencia Partido</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">¿Quieres que se envie un correo electrónico a todos los jugadores reserva para que alguno juegue en su lugar?</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">No</button>
+											<button type="button" class="btn btn-primary"
+												onclick="location.href='<c:url value="/asistencia"/>'">Sí</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</c:when>
 					</c:choose>
 				</div>
+				
 			</div>
+			<br>
 			<div class="row">
 				<c:forEach items="${listaPartidos}" var="p">
 					<div class="col-lg-6 col-md-6 col-sm-6">
@@ -241,6 +247,43 @@
 					</div>
 				</c:forEach>
 			</div>
+			<br>
+			<div class="row">
+				<div class="col-6">
+					<p>Pagar la mensualidad del club:</p>
+					<form id="form2" action=<c:url value="/pagarMes"/>></form>								
+					<form id="form1" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+						target="_top" >
+						<input type="hidden" name="cmd" value="_s-xclick"> <input
+							type="hidden" name="hosted_button_id" value="3V4BERJLSCZ26">
+							
+						<input type="image"
+							src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_paynowCC_LG.gif"
+							border="0" name="submit"
+							alt="PayPal, la forma rápida y segura de pagar en Internet." formtarget="_blank">
+							
+						<img alt="" border="0"
+							src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif"
+							width="1" height="1">							
+					</form>	
+								
+					
+				</div>
+				<div class="col-6">
+					<c:choose>
+						<c:when test="${infoPago!=''}">
+							<div style="color: black;"
+								class="alert alert-warning alert-dismissable">
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">x</button>
+								<strong>Info!</strong> ${infoPago }
+							</div>
+						</c:when>
+					</c:choose>
+				</div>
+			</div>
+			
+			
 		</div>
 	</div>
 

@@ -124,4 +124,13 @@ public class UsuariosDaoImp implements UsuariosDao {
 					.setParameter("t", usu.getTelefono()).setParameter("tipo", usu.getTipoUsuario()).executeUpdate();
 		return filas;
 	}
+	@Override
+	@Transactional
+	public List<Usuarios> listarUsuariosReserva() {
+		List<Usuarios> usuarios= new ArrayList<Usuarios>();
+		Session sesion=sessionFactory.getCurrentSession();
+
+		usuarios= sesion.createQuery("from Usuarios where tipoUsuario=2").list();
+		return usuarios;
+	}
 }

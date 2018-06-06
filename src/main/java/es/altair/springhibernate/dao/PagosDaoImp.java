@@ -31,4 +31,12 @@ private SessionFactory sessionFactory;
 		pagos= sesion.createQuery("from Pagos where idJugador=:id").setParameter("id", id).list();
 		return pagos;
 	}
+	@Override
+	@Transactional
+	public List<Pagos> listarTodosPagos() {
+		Session sesion=sessionFactory.getCurrentSession();
+		List<Pagos> pagos=new ArrayList<Pagos>();
+		pagos= sesion.createQuery("from Pagos").list();
+		return pagos;
+	}
 }

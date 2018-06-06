@@ -11,6 +11,7 @@
 <head>
 <script type="text/javascript">
 </script>
+
 <style>
 .title-header {
 	padding: .75rem 1.25rem;
@@ -137,6 +138,10 @@
 						href="<c:url value="/gestionarPartidos"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/listarTodosPagos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Listar Pagos
+					</a></li>
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em
@@ -185,34 +190,47 @@
 								</div>
 							</div>
 							<div class="card-body p-3">
-								<c:choose>
+							<c:choose>
 								<c:when test="${info!='' }">
-								<div style="color: black;"
-									class="alert alert-warning alert-dismissable">
-									<button type="button" class="close" data-dismiss="alert"
-										aria-hidden="true">x</button>
-									<strong>Info!</strong>
-									${info }
-								</div>
+									<div style="color: black;"
+										class="alert alert-warning alert-dismissable">
+										<button type="button" class="close" data-dismiss="alert"
+											aria-hidden="true">x</button>
+										<strong>Info!</strong> ${info }
+									</div>
 								</c:when>
-								</c:choose>							
-								<c:url value="/addPista" var="addPista"></c:url>
-								<f:form role="form" method="POST" action="${addPista }" commandName="pista"
-									class="form-check">
-									<div class="form-group">
-										<div class="input-group">
-											<div class="input-group-addon bg-light">
-												<i class="fa fa-user text-primary"></i>
+							</c:choose>
+							<c:url value="/addPista" var="addPista"></c:url>
+							<f:form role="form" method="POST" action="${addPista }"
+								commandName="partido" class="form-check">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="well">
+											<div id="datetimepicker1" class="input-append date">
+												<input data-format="dd/MM/yyyy" type="date"></input>
+												
 											</div>
-											<input type="text" id="datepicker"/>
 										</div>
-									</div>									
-									<button type="submit" id="btnRegistrar"
-										class="btn btn-primary btn-block rounded-0 py-2">
-										<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
-									</button>
-								</f:form>
-							</div>
+									</div>
+								</div>
+								<select name="pistas">
+									<c:forEach items="${pistas}" var="pista">
+										<c:choose>
+											<c:when test="${pista.getNombre()} == ${partido.getPista()}">
+												<option selected="sel" value="pista.getIdpista()">olele</option>
+											</c:when>
+											<c:otherwise>
+												<option value="pista.getIdpista()">${pista.getNombre()}</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select>
+								<button type="submit" id="btnRegistrar"
+									class="btn btn-primary btn-block rounded-0 py-2">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
+								</button>
+							</f:form>
+						</div>
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-2 col-sm-2">
@@ -239,19 +257,16 @@
 							</c:choose>
 							<c:url value="/addPista" var="addPista"></c:url>
 							<f:form role="form" method="POST" action="${addPista }"
-								commandName="pista" class="form-check">
+								commandName="partido" class="form-check">
 								<div class="form-group">
 									<div class="input-group">
-										<div class="input-group-addon bg-light">
-											<i class="fa fa-user text-primary"></i>
-										</div>
 										<div class="form-group">
 											<div class="input-group mb-2 mb-sm-0">
 
 												<input type="radio" name="tipode" id="administrador"
-													value="1" onchange="cambiar(this)" /> Administrador <br>
-												<input type="radio" name="tipode" id="usu" value="2"
-													onchange="cambiar(this)" /> Usuario
+													value="1"  /> ${partido.idJugador1.nombre } y ${partido.idJugador2.nombre } <br>
+												<input type="radio" name="tipode" id="usu" value="partido.jugador1"
+													 /> ${partido.idJugador3.nombre } y ${partido.idJugador4.nombre }
 
 											</div>
 										</div>
@@ -283,6 +298,7 @@
 	<script src="<c:url value="/resources/js/custom.js"/>"></script>
 	<script>
 		window.onload = function() {
+			$('#datetimepicker').data("DateTimePicker").FUNCTION()
 			var chart1 = document.getElementById("line-chart").getContext("2d");
 			window.myLine = new Chart(chart1).Line(lineChartData, {
 				responsive : true,
@@ -292,6 +308,14 @@
 			});
 		};
 	</script>
+	<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+      language: 'pt-BR'
+    });
+  });
+</script>
+	
 
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"

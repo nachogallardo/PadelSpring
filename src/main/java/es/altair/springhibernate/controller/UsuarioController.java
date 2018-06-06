@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.altair.springhibernate.bean.Email;
 import es.altair.springhibernate.bean.PartidoString;
 import es.altair.springhibernate.bean.Partidos;
 import es.altair.springhibernate.bean.Pistas;
@@ -79,7 +80,7 @@ public class UsuarioController {
 				return "redirect:/?mensaje="+msg;
 			}
 		} else {
-			msg = "Nombre de usuario ya registrado. Inténtelo con otro";
+			msg = "Nombre de usuario ya registrado. Intentelo con otro";
 			
 			return "redirect:/?mensaje="+msg;
 		}
@@ -89,7 +90,7 @@ public class UsuarioController {
 		usu=usuariosDao.comprobarUsuario(usu.getNombre(), usu.getContrasenia());
 		if (usu!=null) {
 			// Usuario correcto
-			// Poner al usuario en sesión
+			// Poner al usuario en sesiÃ³n
 		
 			sesion.setAttribute("usuLogeado", usu);
 			
@@ -116,7 +117,21 @@ public class UsuarioController {
 		sesion.setAttribute("usuLogeado", null);
 		return "redirect:/";
 	}
-	
+	@RequestMapping(value="/asistencia",method=RequestMethod.GET)
+	public String asistencia(HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return "redirect:/";
+		}
+		Email email= new Email();
+		List<Usuarios> usuarios = usuariosDao.listarUsuariosReserva();
+		String mensaje="Hay una plaza libre para sustituir a " + ((Usuarios)sesion.getAttribute("usuLogeado")).getNombre()+" en un partido si estÃ¡s interesado ponte en contacto con el administrador.";
+		for (Usuarios usuarios2 : usuarios) {
+			
+			email.enviarConGMail(usuarios2.getEmail(), "Asistir Partido", mensaje);
+		}
+		
+		return "redirect:/usuario";
+	}
 	@RequestMapping(value="/usuario", method=RequestMethod.GET)
 	public ModelAndView usuarioNormal(@RequestParam(value="infoPago",required=false,defaultValue="") String infoPago,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
@@ -127,6 +142,10 @@ public class UsuarioController {
 		parti=partidosDao.listarPartidos();
 		for (Partidos p : parti) {
 			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
+		}
+		model.addAttribute("asistencia","");
+		if(((Usuarios)sesion.getAttribute("usuLogeado")).getTipoUsuario()==3) {
+			model.addAttribute("asistencia","si");
 		}
 		model.addAttribute("infoPago",infoPago);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));

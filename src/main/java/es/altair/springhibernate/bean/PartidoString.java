@@ -14,6 +14,7 @@ public class PartidoString {
 	private int minutos;
     private String pista;
     private int numJornada;
+    private int idPartido;
     
     
     
@@ -34,6 +35,32 @@ public class PartidoString {
 		this.pista = pista;
 		this.numJornada = numJornada;
 	}
+	
+	public PartidoString(String jug1, String jug2, String jug3, String jug4, int anio, int mes, int dia, int hora,
+			int minutos, String pista, int numJornada, int idPartido) {
+		super();
+		this.jug1 = jug1;
+		this.jug2 = jug2;
+		this.jug3 = jug3;
+		this.jug4 = jug4;
+		this.anio = anio;
+		this.mes = mes;
+		this.dia = dia;
+		this.hora = hora;
+		this.minutos = minutos;
+		this.pista = pista;
+		this.numJornada = numJornada;
+		this.idPartido = idPartido;
+	}
+
+	public int getIdPartido() {
+		return idPartido;
+	}
+
+	public void setIdPartido(int idPartido) {
+		this.idPartido = idPartido;
+	}
+
 	public String getJug1() {
 		return jug1;
 	}

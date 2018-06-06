@@ -52,21 +52,31 @@
 
 				<ul class="nav nav-pills flex-column sidebar-nav">
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="usuario"/>"><em class="fa fa-user-circle mr-1"></em> Principal
-							<span class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link" href="<c:url value="/editar"/>"><em
+						href="<c:url value="administrador"/>"><em
+							class="fa fa-user-circle mr-1"></em> Editar Usuarios <span
+							class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/editarAdmin"/>"><em
 							class="fa fa-cog mr-1"></em> Editar Perfil</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/gestionPistas"/>"><em
+							class="fa fa-cog mr-1"></em> Gestionar Pistas</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/creaTorneo"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Creación
+							Torneo
+					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/clasificacion"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Clasificacion Actual
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<c:url value="/listaTorneos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Torneos
+						href="<c:url value="/gestionarPartidos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
 					<li class="nav-item"><a class="nav-link active"
-						href="<c:url value="/listaPagos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Ver mis pagos
+						href="<c:url value="/listarTodosPagos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Listar Pagos
 					</a></li>
 				</ul>
 
@@ -75,7 +85,8 @@
 			</nav>
 
 			<main
-				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4"> <header class="page-header row justify-center">
+				class="col-xs-12 col-sm-8 offset-sm-4 col-lg-9 offset-lg-3 col-xl-10 offset-xl-2 pt-3 pl-4">
+			<header class="page-header row justify-center">
 				<div class="col-md-6 col-lg-8">
 					<h1 class="float-left text-center text-md-left">Bienvenido
 						${usuLogeado.nombre }</h1>
@@ -106,7 +117,7 @@
 
 				<div class="clear"></div>
 			</header>
-			<c:url value="/pdf" var="iniciar"></c:url>
+			<c:url value="/pdfAdmin" var="iniciar"></c:url>
 			<f:form role="form" method="POST" action="${iniciar }" 
 					class="form-check">
 					
@@ -115,7 +126,7 @@
 						</button>
 						 
 				</f:form>
-			<c:choose>
+				<c:choose>
 						<c:when test="${info!='' }">
 						<div style="color: black;"
 							class="alert alert-warning alert-dismissable form-control">
@@ -126,33 +137,31 @@
 						</div>
 						</c:when>
 						</c:choose>
-		
-				<div style="margin-left: 15%;" class="col-md-6">
-					<div class="row">
-						<h3>Mis Pagos</h3>
-					</div>
-					<div class="row">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th scope="col">Nombre</th>
-									<th scope="col">Fecha</th>
-									<th scope="col">Pago</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${pagosString}" var="p">
-									<tr>
-										<td>${ p.nombre}</td>
-										<td>${ p.fecha}</td>
-										<td>20 euros</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
+			<div style="margin-left: 15%;" class="col-md-6">
+			<div class="row"><h3>Mis Pagos</h3></div>
+			<div class="row">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Nombre</th>
+							<th scope="col">Fecha</th>
+							<th scope="col">Pago</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${pagosString}" var="p">
+							<tr>
+								<td>${ p.nombre}</td>
+								<td>${ p.fecha}</td>
+								<td>20 euros</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+</div>
 
-				</div></div>
+			</div>
+		</div>
 	</div>
 
 

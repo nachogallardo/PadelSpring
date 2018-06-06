@@ -135,6 +135,10 @@
 						href="<c:url value="/gestionarPartidos"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/listarTodosPagos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Listar Pagos
+					</a></li>
 				</ul>
 
 				<a href="<c:url value="/logout"/>" class="logout-button"><em
@@ -210,7 +214,7 @@
 							<div class="col-4"></div>
 							<div class="col-4" style="margin-bottom: 2%;">
 								<a
-									href="<c:url value="/editarPartido?nombreJugador=${p.jug1 }"/>">
+									href="<c:url value="/editarPartido?idPartido=${p.idPartido }"/>">
 									<button class="btn btn-outline-info" value="right"
 										type="button">
 										<i class="fa fa-fw fa-cog"></i>Gestionar

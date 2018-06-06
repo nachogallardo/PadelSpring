@@ -75,6 +75,10 @@
 						href="<c:url value="/gestionarPartidos"/>"> <em
 							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
 					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<c:url value="/listarTodosPagos"/>"> <em
+							class="fa fa-plus-circle" aria-hidden="true"></em> Listar Pagos
+					</a></li>
 
 				</ul>
 

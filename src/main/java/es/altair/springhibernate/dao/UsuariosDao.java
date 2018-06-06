@@ -23,4 +23,7 @@ public interface UsuariosDao {
 
 
 	int insertar(Usuarios usu);
+
+
+	List<Usuarios> listarUsuariosReserva();
 }

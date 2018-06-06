@@ -50,7 +50,7 @@
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
 			</beans:props>
 		</beans:property>
-	</beans:bean>
+	</beans:bean> 
 	
 	<beans:bean id="UsuariosDao" class="es.altair.springhibernate.dao.UsuariosDaoImp">
 		<beans:property name="sessionFactory" ref="sessionFactory"></beans:property>

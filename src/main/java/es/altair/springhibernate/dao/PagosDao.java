@@ -8,4 +8,6 @@ public interface PagosDao {
 	void insert(Pagos p);
 
 	List<Pagos> listarPagos(int id);
+
+	List<Pagos> listarTodosPagos();
 }

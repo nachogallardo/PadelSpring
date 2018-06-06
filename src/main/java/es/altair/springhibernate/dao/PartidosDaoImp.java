@@ -64,5 +64,23 @@ private SessionFactory sessionFactory;
 					.setParameter("id", idPartido)
 					.executeUpdate();	
 	}
+
+	@Override
+	@Transactional
+	public Partidos partidoPorNombreJugador(String nombre) {
+		Session sesion=sessionFactory.getCurrentSession();
+		Partidos p = new Partidos();
+		p=(Partidos)sesion.createQuery("from Partidos where idJugador1=:i or idJugador2=:i or idJugador3=:i or idJugador4=:i").setParameter("i", nombre).uniqueResult();
+		return p;
+	}
+
+	@Override
+	@Transactional
+	public Partidos partidoPorIdPartido(int idPartido) {
+		Session sesion=sessionFactory.getCurrentSession();
+		Partidos p = new Partidos();
+		p=(Partidos)sesion.createQuery("from Partidos where idPartido=:i").setParameter("i", idPartido).uniqueResult();
+		return p;
+	}
 	
 }
