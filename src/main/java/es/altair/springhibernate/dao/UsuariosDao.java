@@ -26,4 +26,7 @@ public interface UsuariosDao {
 
 
 	List<Usuarios> listarUsuariosReserva();
+
+
+	List<Usuarios> listarUsuariosJugadores();
 }

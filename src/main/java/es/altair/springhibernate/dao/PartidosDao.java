@@ -21,4 +21,8 @@ public interface PartidosDao {
 	Partidos partidoPorNombreJugador(String nombre);
 
 	Partidos partidoPorIdPartido(int idPartido);
+
+	List<Partidos> listarPartidosSinGanador();
+
+	int sacarNumeroJornada();
 }

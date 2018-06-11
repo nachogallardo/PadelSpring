@@ -63,8 +63,8 @@ public class Partidos implements Serializable{
 		this.idJugador2 = idJugador2;
 		this.idJugador3 = idJugador3;
 		this.idJugador4 = idJugador4;
-		this.idGanador1 = idGanador1;
-		this.idGanador2 = idGanador2;
+		this.idGanador1 = 0;
+		this.idGanador2 = 0;
 		this.idTorneo1 = idTorneo1;
 	}
 

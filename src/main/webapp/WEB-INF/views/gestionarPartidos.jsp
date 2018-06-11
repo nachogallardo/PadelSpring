@@ -178,6 +178,19 @@
 				</div>
 				<div class="clear"></div>
 			</header>
+			<c:choose>
+						<c:when test="${terminar!='' }">
+							<c:url value="/generarProximos" var="iniciar"></c:url>
+			<f:form role="form" method="POST" action="${iniciar }" 
+					class="form-check">
+					
+						<button type="submit" class="btn btn-md btn-info col-12">
+							 Terminar Jornada
+						</button>
+						 
+				</f:form>
+						</c:when>
+			</c:choose>
 			<div class="row">
 				<c:forEach items="${listaPartidos}" var="p">
 					<div class="col-lg-6 col-md-6 col-sm-6">

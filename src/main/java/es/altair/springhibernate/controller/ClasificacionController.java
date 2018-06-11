@@ -43,6 +43,7 @@ public class ClasificacionController {
 			
 			clasificacion.add(new ClasificacionString(clasificacion1.getUsuario().getNombre(), clasificacion1.getTorneo().getNombre(), clasificacion1.getPuntos(), clasificacion1.getPartJugados()));
 		}
+		
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		model.addAttribute("nombreTorneo",((Torneo)sesion.getAttribute("torneo")).getNombre());
 		if(((Usuarios)sesion.getAttribute("usuLogeado")).getTipoUsuario()==1)

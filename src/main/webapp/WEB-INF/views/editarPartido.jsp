@@ -10,6 +10,15 @@
 <html lang="en">
 <head>
 <script type="text/javascript">
+function cambiar(event) {
+	 if(event.value==1){
+		 document.getElementById("ganador1").value=document.getElementById("1jugador").value;
+		 document.getElementById("ganador2").value=document.getElementById("2jugador").value;
+	 }else{
+		 document.getElementById("ganador1").value=document.getElementById("3jugador").value;
+		 document.getElementById("ganador2").value=document.getElementById("4jugador").value;
+	 }
+}
 </script>
 
 <style>
@@ -245,36 +254,41 @@
 								</div>
 							</div>
 							<div class="card-body p-3">
-							<c:choose>
-								<c:when test="${info!='' }">
-									<div style="color: black;"
-										class="alert alert-warning alert-dismissable">
-										<button type="button" class="close" data-dismiss="alert"
-											aria-hidden="true">x</button>
-										<strong>Info!</strong> ${info }
-									</div>
-								</c:when>
-							</c:choose>
-							<c:url value="/addPista" var="addPista"></c:url>
-							<f:form role="form" method="POST" action="${addPista }"
+							<c:url value="/ganadoresPartido" var="fin"></c:url>
+							<f:form role="form" method="POST" action="${fin }"
 								commandName="partido" class="form-check">
+						<input type="number" style="display: none;" value="${partido.idJugador1.idUsuario }" 
+						 id="1jugador" />
+						<input type="number" style="display: none;" value="${partido.idJugador2.idUsuario }"
+						id="2jugador"  />
+						<input type="number" style="display: none;" value="${partido.idJugador3.idUsuario }"
+						id="3jugador"  />
+						<input type="number" style="display: none;" value="${partido.idJugador4.idUsuario }"
+						id="4jugador"  />
+								<f:input type="number" style="display: none;" path="idGanador1"
+						name="idGanador1" id="ganador1" />
+								<f:input type="number" style="display: none;" path="idGanador2"
+						name="idGanador2" id="ganador2" />
 								<div class="form-group">
 									<div class="input-group">
 										<div class="form-group">
 											<div class="input-group mb-2 mb-sm-0">
-
-												<input type="radio" name="tipode" id="administrador"
+											<div class="card">
+												<input type="radio" required="required" onchange="cambiar(this)" name="tipode" id="ganadores1"
 													value="1"  /> ${partido.idJugador1.nombre } y ${partido.idJugador2.nombre } <br>
-												<input type="radio" name="tipode" id="usu" value="partido.jugador1"
+											</div>
+											
+											<div class="card">
+												<input type="radio" required="required" onchange="cambiar(this)" name="tipode" id="ganadores2" value="2"
 													 /> ${partido.idJugador3.nombre } y ${partido.idJugador4.nombre }
-
+											</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<button type="submit" id="btnRegistrar"
 									class="btn btn-primary btn-block rounded-0 py-2">
-									<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
+									 Elegir Ganadores
 								</button>
 							</f:form>
 						</div>

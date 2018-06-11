@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 
 import es.altair.springhibernate.bean.Clasificacion;
 import es.altair.springhibernate.bean.Torneo;
+import es.altair.springhibernate.bean.Usuarios;
 
 public class ClasificacionDaoImp implements ClasificacionDao {
 private SessionFactory sessionFactory;
@@ -41,12 +42,58 @@ private SessionFactory sessionFactory;
 	@Transactional
 	public void Editar(int puntos,int partJugados,int idTorneo,int idUsuario) {
 		Session sesion=sessionFactory.getCurrentSession();
-		sesion.createSQLQuery("UPDATE clasificacion SET puntos=:p, partJugados=:pj where idUsuario=:i and idTorneo=:t" )
+		sesion.createSQLQuery("UPDATE clasificacion SET puntos=:p where idUsuario=:i and idTorneo=:t" )
 					.setParameter("p", puntos)
-					.setParameter("pj", partJugados)
 					.setParameter("i", idUsuario)
 					.setParameter("t", idTorneo)
 					.executeUpdate();	
+	}
+
+	@Override
+	@Transactional
+	public Clasificacion ClasificacionPorIdUsuarioyIdTorneo(int idGanador1, int idTorneo) {
+		Session sesion=sessionFactory.getCurrentSession();
+		Clasificacion c = new Clasificacion();
+		c=(Clasificacion)sesion.createQuery("from Clasificacion where idTorneo=:i and idUsuario=:u").setParameter("i", idTorneo).setParameter("u", idGanador1).uniqueResult();
+		return c;
+	}
+
+	@Override
+	@Transactional
+	public void SumarPartidoJugado(Usuarios idJugador1, Usuarios idJugador2, Usuarios idJugador3, Usuarios idJugador4,Torneo t) {
+		Session sesion=sessionFactory.getCurrentSession();
+		System.out.println(idJugador1.getIdUsuario());
+		int partJugados=0;
+		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador1.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados++;
+		System.out.println(partJugados);
+		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
+					.setParameter("p", partJugados)
+					.setParameter("t", t.getIdTorneo())
+					.setParameter("i", idJugador1.getIdUsuario())
+					.executeUpdate();
+		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador2.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados++;
+		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
+					.setParameter("p", partJugados)
+					.setParameter("t", t.getIdTorneo())
+					.setParameter("i", idJugador2.getIdUsuario())
+					.executeUpdate();
+		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador3.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados++;
+		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
+					.setParameter("p", partJugados)
+					.setParameter("t", t.getIdTorneo())
+					.setParameter("i", idJugador3.getIdUsuario())
+					.executeUpdate();
+		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador4.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados++;
+		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
+					.setParameter("p", partJugados)
+					.setParameter("t", t.getIdTorneo())
+					.setParameter("i", idJugador4.getIdUsuario())
+					.executeUpdate();
+		
 	}
 
 	

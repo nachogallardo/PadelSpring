@@ -116,18 +116,22 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
+							<th scope="col">Posicion</th>
 							<th scope="col">Nombre</th>
 							<th scope="col">Puntos</th>
 							<th scope="col">Partidos Jugados</th>
 						</tr>
 					</thead>
 					<tbody>
+					<%int cont=1; %>
 						<c:forEach items="${clasificacion}" var="c">
 							<tr>
+								<td><%=cont %> </td>
 								<td>${ c.nombre}</td>
 								<td>${ c.puntos}</td>
 								<td>${c.partJugados}</td>
 							</tr>
+							<%cont++; %>
 						</c:forEach>
 					</tbody>
 				</table>

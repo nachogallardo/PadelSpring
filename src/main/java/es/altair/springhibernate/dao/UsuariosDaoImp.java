@@ -133,4 +133,14 @@ public class UsuariosDaoImp implements UsuariosDao {
 		usuarios= sesion.createQuery("from Usuarios where tipoUsuario=2").list();
 		return usuarios;
 	}
+
+	@Override
+	@Transactional
+	public List<Usuarios> listarUsuariosJugadores() {
+		List<Usuarios> usuarios= new ArrayList<Usuarios>();
+		Session sesion=sessionFactory.getCurrentSession();
+
+		usuarios= sesion.createQuery("from Usuarios where tipoUsuario=3").list();
+		return usuarios;
+	}
 }
