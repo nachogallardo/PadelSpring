@@ -24,6 +24,7 @@ public class Usuarios implements Serializable{
 	private int tipoUsuario;
 	private String contrasenia;
 	private int telefono;
+	private int asistir;
 	
 	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
@@ -46,8 +47,9 @@ public class Usuarios implements Serializable{
 	
 	
 	
-	public Usuarios() {
+	public Usuarios() {		
 		super();
+		
 	}
 	
 
@@ -59,9 +61,20 @@ public class Usuarios implements Serializable{
 		this.tipoUsuario = tipoUsuario;
 		this.contrasenia = contrasenia;
 		this.telefono = telefono;
+		this.asistir=0;
 	}
 
 
+	
+
+	public int getAsistir() {
+		return asistir;
+	}
+
+
+	public void setAsistir(int asistir) {
+		this.asistir = asistir;
+	}
 
 
 	public Set<Pagos> getPagos() {

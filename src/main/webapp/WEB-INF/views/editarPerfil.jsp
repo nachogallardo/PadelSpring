@@ -146,7 +146,7 @@ function validarTelefono() {
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-user text-primary"></i>
 											</div>
-											<f:input path="nombre" type="text" name="nombre" required="required"
+											<f:input path="nombre" maxlength="30" type="text" name="nombre" required="required"
 												class="form-control" 
 												placeholder="Nombre"/>
 										</div>
@@ -156,7 +156,7 @@ function validarTelefono() {
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-envelope text-primary"></i>
 											</div>
-											<f:input type="email" path="email" name="email" required="required"
+											<f:input type="email" maxlength="70" path="email" name="email" required="required"
 												class="form-control" 
 												placeholder="Email"/>
 										</div>
@@ -166,7 +166,7 @@ function validarTelefono() {
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-phone text-primary"></i>
 											</div>
-											<f:input path="telefono" type="number" id="telefono" onblur="validarTelefono()" name="telefono" required="required"
+											<f:input path="telefono" maxlength="9" type="number" id="telefono" onblur="validarTelefono()" name="telefono" required="required"
 												class="form-control" 
 												placeholder="telefono"/>
 										</div>
@@ -179,7 +179,47 @@ function validarTelefono() {
 								</f:form>
 								
 			</div>
+			<div class="row" style="margin-top: 20px;">
+				<a data-toggle="modal" style="margin-left: 25%;" data-target="#editarClave">
+												<button class="btn btn-outline-danger" value="left"
+													type="button">
+													Editar Contraseña
+												</button>
+										</a>
+				<div class="modal fade"
+											id="editarClave" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Editar
+															Clave</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+													<c:url value="/editarClave" var="editClave"></c:url>
+													<form method="POST" role="form" action="${editClave }">
+														<input type="password" maxlength="30"  name="clave" required="required"
+												class="form-control" 
+												placeholder="Nueva Password"/>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-secondary"
+															data-dismiss="modal">No</button>
+														<button type="submit" class="btn btn-primary"
+															>Sí</button>
+													</div>
+													</form>
+													
+												</div>
+											</div>
+										</div>
+			</div>
 			
+		</div>
 		</div>
 	</div>
 

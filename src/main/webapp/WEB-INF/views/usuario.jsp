@@ -174,8 +174,19 @@
 			<div class="row">
 			<div class="col-4"></div>
 				<div class="col-4">
+							<c:choose>
+						<c:when test="${info!='' }">
+						<div style="color: black;"
+							class="alert alert-warning alert-dismissable form-control">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">x</button>
+							<strong>Info!</strong>
+							${info }
+						</div>
+						</c:when>
+						</c:choose>
 					<c:choose>
-						<c:when test="${asistencia!=''}">
+						<c:when test="${asistencia!=''&&info==''}">
 							<a data-toggle="modal"
 								data-target="#asistencia">
 								<button class="btn btn-sm btn-outline-danger" value="left"

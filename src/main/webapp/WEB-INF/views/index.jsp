@@ -81,7 +81,7 @@
 					<div class="row">
 						<div class="input-group col-md-12">
 
-							<f:input type="text" path="nombre" class="form-control" id="usuario"
+							<f:input type="text" maxlength="30" path="nombre" class="form-control" id="usuario"
 								name="usuario" placeholder="Usuario" autofocus="autofocus"
 								required="required"/>
 						</div>
@@ -89,7 +89,7 @@
 						<div class="col-12"></div>
 						<div class="input-group col-md-12">
 
-							<f:input path="contrasenia" class="form-control" type="password" id="password"
+							<f:input path="contrasenia" maxlength="30" class="form-control" type="password" id="password"
 								name="password" placeholder="Contraseña" required="required"/>
 						</div>
 
@@ -130,8 +130,13 @@
 					</div>
 				</header>
 
-
+<div class="row">
+				<div class="col-12">
+				<h2>Proximos Partidos</h2>
+				</div>
 				<div class="row">
+				
+				</div>
 					<div class="col-md-8">
 						<div class="row">
 						 	
@@ -170,7 +175,6 @@
 					</div>
 				</c:forEach>
 			
-							
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -205,7 +209,7 @@
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-user text-primary"></i>
 											</div>
-											<f:input type="text" path="nombre" name="nombre" required="required"
+											<f:input type="text" maxlength="30" path="nombre" name="nombre" required="required"
 												class="form-control" id="inlineFormInputGroupUsername"
 												placeholder="Nombre"/>
 										</div>
@@ -215,7 +219,7 @@
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-envelope text-primary"></i>
 											</div>
-											<f:input type="email" path="email" name="email" required="required"
+											<f:input type="email" maxlength="70" path="email" name="email" required="required"
 												class="form-control" id="inlineFormInputGroupUsername"
 												placeholder="Email"/>
 										</div>
@@ -226,7 +230,7 @@
 												<i class="fa fa-key prefix text-primary"></i>
 											</div>
 											
-												<f:input type="password" path="contrasenia" id="clave" required="required"
+												<f:input type="password" maxlength="30" path="contrasenia" id="clave" required="required"
 												 class="form-control"							
 												placeholder="contraseña"/>
 										</div>
@@ -249,7 +253,7 @@
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-phone text-primary"></i>
 											</div>
-											<f:input type="number" path="telefono" id="telefono" onblur="validarTelefono()"
+											<f:input type="number" maxlength="9" path="telefono" id="telefono" onblur="validarTelefono()"
 												name="telefono" required="required" class="form-control"
 												placeholder="telefono"/>
 										</div>
@@ -260,12 +264,75 @@
 										class="btn btn-primary btn-block rounded-0 py-2">
 										<i class="fa fa-sign-in"></i> Enviar
 									</button>
-								</f:form>
-								
+								</f:form>								
 							</div>
 						</div>
 					</div>
 				</div>
+				
+				
+				<div class="row">
+				<div class="col-12">
+				<h2>Últimos Partidos</h2>
+				</div>
+				</div>
+					<div class="col-md-8">
+						<div class="row">
+						 	
+				<c:forEach items="${listaPartidosTerminados}" var="p">
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<article class="card">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+								<c:choose>
+								<c:when test="${p.jug1== p.idGanador1}">
+									<h5 class="tagline card-text text-xs-center"
+										style="color:green;text-align: center;">${p.jug1 } y ${p.jug2 }</h5>
+								</c:when>
+								<c:otherwise>
+								<h5 class="tagline card-text text-xs-center"
+										style="color:red;text-align: center;">${p.jug1 } y ${p.jug2 }</h5>
+								</c:otherwise>
+								</c:choose>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Pista: ${p.pista }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Jornada: ${p.numJornada }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<p style="text-align: center;">Fecha: ${p.dia }/${p.mes }/${p.anio }
+										${p.hora }:${p.minutos }</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12" style="margin: 2%;">
+								<c:choose>
+								<c:when test="${p.jug3== p.idGanador1}">
+									<h5 class="tagline card-text text-xs-center"
+										style="color:green;text-align: center;">${p.jug3 } y ${p.jug4 }</h5>
+								</c:when>
+								<c:otherwise>
+								<h5 class="tagline card-text text-xs-center"
+										style="color:red;text-align: center;">${p.jug3 } y ${p.jug4 }</h5>
+								</c:otherwise>
+								</c:choose>
+								</div>
+							</div>
+						</article>
+					</div>
+				</c:forEach>
+			
+						</div>
+					</div>
+				
 			</div>
 		</div>
 	</div>

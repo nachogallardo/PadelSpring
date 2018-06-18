@@ -66,9 +66,11 @@ public class PagoController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return "redirect:/listaPagos?info=Ha habido un error al generar pdf.";
+				
+				return "redirect:/listaPagos?info=Error al generar pdf";
+				
 			}
-			return "redirect:/listaPagos?info=Pdf generado en c:/pagosPDF";
+			return "redirect:/listaPagos?info=Pdf generado en descargas";
 			
 		}
 	 @RequestMapping(value="/pdfAdmin", method=RequestMethod.POST)
@@ -92,7 +94,7 @@ public class PagoController {
 				e.printStackTrace();
 				return "redirect:/listarTodosPagos?info=Ha habido un error al generar pdf.";
 			}
-			return "redirect:/listarTodosPagos?info=Pdf generado en c:/pagosPDF";
+			return "redirect:/listarTodosPagos?info=Pdf generado en descargas";
 			
 		}
 	 @RequestMapping(value="/listaPagos",method=RequestMethod.GET)

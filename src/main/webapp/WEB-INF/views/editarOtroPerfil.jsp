@@ -100,7 +100,7 @@
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/gestionarPartidos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
+							class="fa fa-cog mr-1"></em> Gestionar Partidos
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/listarTodosPagos"/>"> <em
@@ -185,7 +185,7 @@
 							<div class="input-group-addon bg-light">
 								<i class="fa fa-user text-primary"></i>
 							</div>
-							<f:input type="text" path="nombre" name="nombre"
+							<f:input type="text" maxlength="30" path="nombre" name="nombre"
 								required="required" class="form-control" placeholder="Nombre" />
 						</div>
 					</div>
@@ -194,7 +194,7 @@
 							<div class="input-group-addon bg-light">
 								<i class="fa fa-envelope text-primary"></i>
 							</div>
-							<f:input type="email" path="email" name="email"
+							<f:input type="email" maxlength="70" path="email" name="email"
 								required="required" class="form-control" placeholder="Email" />
 						</div>
 					</div>
@@ -214,7 +214,7 @@
 							<div class="input-group-addon bg-light">
 								<i class="fa fa-phone text-primary"></i>
 							</div>
-							<f:input type="number" path="telefono" id="telefono"
+							<f:input type="number" maxlength="9" path="telefono" id="telefono"
 								onblur="validarTelefono()" name="telefono" required="required"
 								class="form-control" placeholder="telefono" />
 						</div>

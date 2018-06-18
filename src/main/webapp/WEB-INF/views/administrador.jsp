@@ -73,7 +73,7 @@
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/gestionarPartidos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
+							class="fa fa-cog mr-1"></em> Gestionar Partidos
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/listarTodosPagos"/>"> <em
@@ -121,7 +121,17 @@
 				<div class="clear"></div>
 			</header>
 
-
+			<c:choose>
+						<c:when test="${info!='' }">
+						<div style="color: black;"
+							class="alert alert-warning alert-dismissable form-control">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">x</button>
+							<strong>Info!</strong>
+							${info }
+						</div>
+						</c:when>
+						</c:choose>
 			<div class="section">
 				<div class="container">
 					<div class="row">

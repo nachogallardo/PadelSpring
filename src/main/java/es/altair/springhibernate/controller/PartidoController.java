@@ -4,12 +4,15 @@ package es.altair.springhibernate.controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mysql.jdbc.Util;
 
 import es.altair.springhibernate.bean.Clasificacion;
+import es.altair.springhibernate.bean.Email;
 import es.altair.springhibernate.bean.PartidoString;
 import es.altair.springhibernate.bean.Partidos;
 import es.altair.springhibernate.bean.Pistas;
@@ -48,12 +52,13 @@ public class PartidoController {
 	private UsuariosDao usuariosDao;
 	
 	@RequestMapping(value="/gestionarPartidos", method=RequestMethod.GET)
-	public ModelAndView gestionarPartidos(@RequestParam(value="terminar",required=false,defaultValue="")String terminar,Model model,HttpSession sesion) {
+	public ModelAndView gestionarPartidos(@RequestParam(value="info",required=false,defaultValue="")String info,@RequestParam(value="terminar",required=false,defaultValue="")String terminar,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
 			return new ModelAndView("redirect:/");
 		}
 		List<Partidos>partidosSinAcabar=new ArrayList<Partidos>();
 		partidosSinAcabar=partidosDao.listarPartidosSinGanador();
+		model.addAttribute("info",info);
 		
 		if(partidosSinAcabar.size()==0) {
 			terminar="siguiente";
@@ -64,6 +69,7 @@ public class PartidoController {
 		parti=partidosDao.listarPartidosSinGanador();
 		for (Partidos p : parti) {
 			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada(),p.getIdPartido()));
+			
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("gestionarPartidos","listaPartidos",partidos);
@@ -84,10 +90,41 @@ public class PartidoController {
 		sesion.setAttribute("jug4", p.getIdJugador4());
 		model.addAttribute("pistas",pistas);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		
+	    
 		return new ModelAndView("editarPartido");
 	}
 	
-	
+	@RequestMapping(value="/modificarFechaPista",method= RequestMethod.POST)
+	public String editFechaPista(@RequestParam String fechaPartido,@RequestParam String pista1,HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return "redirect:/";
+		}
+
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		Date fecha = new Date();
+		try {
+			fecha = sdf.parse(fechaPartido);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		partidosDao.EditarPartido((Integer)sesion.getAttribute("idPartido"), Integer.parseInt(pista1), fecha);
+		
+		Email email= new Email();
+		List<Usuarios> usuarios = usuariosDao.listarUsuariosJugadores();
+		String mensaje="El proximo partido que jugaran " + ((Usuarios)sesion.getAttribute("jug1")).getNombre()+", "+ ((Usuarios)sesion.getAttribute("jug2")).getNombre()+", "+ ((Usuarios)sesion.getAttribute("jug3")).getNombre()+" y "+ ((Usuarios)sesion.getAttribute("jug4")).getNombre()+" se va a jugar en la pista: "+pistasDao.pistaPorId(Integer.parseInt(pista1))+" y en la fecha: "+(fecha.getYear()+1900)+"/"+(fecha.getMonth()+1)+"/"+fecha.getDate()+" a las "+fecha.getHours()+":"+fecha.getMinutes();
+		for (Usuarios usuarios2 : usuarios) {
+			
+			email.enviarConGMail(usuarios2.getEmail(), "Proximo Partido", mensaje);
+		}
+		
+			
+		
+		return "redirect:/gestionarPartidos?info=Correo enviado a los jugadores del torneo con nueva fecha y pista";
+	}
 	@RequestMapping(value="/ganadoresPartido",method= RequestMethod.POST)
 	public String elegirGanador(@ModelAttribute Partidos partido,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
@@ -100,7 +137,8 @@ public class PartidoController {
 		Clasificacion c1=clasificacionDao.ClasificacionPorIdUsuarioyIdTorneo(partido.getIdGanador2(),idTorneo);
 		clasificacionDao.Editar(c.getPuntos()+3, c.getPartJugados()+1, idTorneo, partido.getIdGanador2());
 		
-		partidosDao.EditarGanadores(partido.getIdGanador1(),partido.getIdGanador2(),(int)sesion.getAttribute("idPartido"));
+		partidosDao.EditarGanadores(partido.getIdGanador1(),partido.getIdGanador2(),(Integer)sesion.getAttribute("idPartido"));
+		
 		
 		return "redirect:/gestionarPartidos";
 	}
@@ -115,7 +153,10 @@ public class PartidoController {
 		List<Usuarios> usuPartidos= new ArrayList<Usuarios>();
 		usuPartidos=usuariosDao.listarUsuariosJugadores();
 		List<Integer> numeros=new ArrayList<Integer>();
-		
+		for (Usuarios u : usuPartidos) {
+			u.setAsistir(1);
+			usuariosDao.editarAsistir(u);
+		}
 		numeros = generarJugadoresAleatorios(usuPartidos.size());
 		int numJornada = partidosDao.sacarNumeroJornada();
 		numJornada++;

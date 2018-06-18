@@ -104,7 +104,7 @@
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/gestionarPartidos"/>"> <em
-							class="fa fa-plus-circle" aria-hidden="true"></em> Gestionar Partidos
+							class="fa fa-cog mr-1"></em> Gestionar Partidos
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="<c:url value="/listarTodosPagos"/>"> <em
@@ -265,7 +265,7 @@
 											<div class="input-group-addon bg-light">
 												<i class="fa fa-user text-primary"></i>
 											</div>
-											<f:input type="text" path="nombre" name="nombre" required="required"
+											<f:input type="text" maxlength="15" path="nombre" name="nombre" required="required"
 												class="form-control" id="inlineFormInputGroupUsername"
 												placeholder="Nombre"/>
 										</div>

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.altair.springhibernate.bean.Email;
 import es.altair.springhibernate.bean.PartidoString;
+import es.altair.springhibernate.bean.PartidoStringGanador;
 import es.altair.springhibernate.bean.Partidos;
 import es.altair.springhibernate.bean.Pistas;
 import es.altair.springhibernate.bean.Torneo;
@@ -53,20 +54,47 @@ public class UsuarioController {
 		}
 		List<Partidos>parti=new ArrayList<Partidos>();
 		List<PartidoString> partidos= new ArrayList<PartidoString>();
-		parti=partidosDao.listarPartidos();
+		parti=partidosDao.listarPartidosSinGanador();
 		for (Partidos p : parti) {
 			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
 		}
 		sesion.setAttribute("listaPartidos", partidos);
+		List<Partidos>partid=new ArrayList<Partidos>();
+		List<PartidoStringGanador> partidos1= new ArrayList<PartidoStringGanador>();
+		partid=partidosDao.listarPartidosConGanador();
+		for (Partidos p : partid) {
+			Usuarios ganador1 = usuariosDao.usuarioPorId(p.getIdGanador1());
+			Usuarios ganador2 = usuariosDao.usuarioPorId(p.getIdGanador2());
+			partidos1.add(new PartidoStringGanador(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada(),ganador1.getNombre(),ganador2.getNombre()));
+			
+		}
+		sesion.setAttribute("listaPartidosTerminados", partidos1);
 		sesion.setAttribute("torneo", torneoActual);
 		return new ModelAndView("index","usuario",new Usuarios());
+	}
+	
+	@RequestMapping(value="/editarClave",method= RequestMethod.POST)
+	public String editarClave(@RequestParam String clave,Model model,HttpSession sesion) {
+		if(sesion.getAttribute("usuLogeado")==null) {
+			return "redirect:/";
+		}
+		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		
+		usuariosDao.EditarClave(((Usuarios)sesion.getAttribute("usuLogeado")).getIdUsuario(),clave);
+		
+		if(((Usuarios)sesion.getAttribute("usuLogeado")).getTipoUsuario()==1) {
+			return "redirect:/editarAdmin?info=Clave editada";
+		}else {
+			return "redirect:/editar?info=Clave editada";
+		}
+		
 	}
 	@RequestMapping(value="/addUsuario", method=RequestMethod.POST)
 	public String addUsuario(@ModelAttribute Usuarios usu) {
 	
 		int filas = 0;
 		String msg = "";		
-		
+		usu.setAsistir(0);
 		if (!usuariosDao.validarUsuario(usu)) {
 			filas = usuariosDao.insertar(usu);
 			if (filas == 1) {
@@ -122,40 +150,47 @@ public class UsuarioController {
 		if(sesion.getAttribute("usuLogeado")==null) {
 			return "redirect:/";
 		}
+		Usuarios usu=(Usuarios)sesion.getAttribute("usuLogeado");
+		usu.setAsistir(0);
+		usuariosDao.editarAsistir(usu);
 		Email email= new Email();
 		List<Usuarios> usuarios = usuariosDao.listarUsuariosReserva();
-		String mensaje="Hay una plaza libre para sustituir a " + ((Usuarios)sesion.getAttribute("usuLogeado")).getNombre()+" en un partido si estás interesado ponte en contacto con el administrador.";
+		String mensaje="Hay una plaza libre para sustituir a " + ((Usuarios)sesion.getAttribute("usuLogeado")).getNombre()+" en un partido si estas interesado ponte en contacto con el administrador.";
 		for (Usuarios usuarios2 : usuarios) {
 			
 			email.enviarConGMail(usuarios2.getEmail(), "Asistir Partido", mensaje);
 		}
 		
-		return "redirect:/usuario";
+		return "redirect:/usuario?info=Correo enviado a los jugadores reserva";
 	}
 	@RequestMapping(value="/usuario", method=RequestMethod.GET)
-	public ModelAndView usuarioNormal(@RequestParam(value="infoPago",required=false,defaultValue="") String infoPago,Model model,HttpSession sesion) {
+	public ModelAndView usuarioNormal(@RequestParam(value="info",required=false,defaultValue="") String info,@RequestParam(value="infoPago",required=false,defaultValue="") String infoPago,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
 			return new ModelAndView("redirect:/");
 		}
 		List<Partidos>parti=new ArrayList<Partidos>();
 		List<PartidoString> partidos= new ArrayList<PartidoString>();
-		parti=partidosDao.listarPartidos();
+		parti=partidosDao.listarPartidosSinGanador();
 		for (Partidos p : parti) {
 			partidos.add(new PartidoString(p.getIdJugador1().getNombre(), p.getIdJugador2().getNombre(), p.getIdJugador3().getNombre(), p.getIdJugador4().getNombre(), p.getFechaPartido().getYear()+1900,p.getFechaPartido().getMonth()+1,p.getFechaPartido().getDate(),p.getFechaPartido().getHours(),p.getFechaPartido().getMinutes(), p.getPista().getNombre(), p.getNumJornada()));
 		}
+		model.addAttribute("info",info);
+		System.out.println(info);
 		model.addAttribute("asistencia","");
-		if(((Usuarios)sesion.getAttribute("usuLogeado")).getTipoUsuario()==3) {
+		if(((Usuarios)sesion.getAttribute("usuLogeado")).getTipoUsuario()==3&&((Usuarios)sesion.getAttribute("usuLogeado")).getAsistir()==1) {
 			model.addAttribute("asistencia","si");
 		}
+		
 		model.addAttribute("infoPago",infoPago);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("usuario","listaPartidos",partidos);
 	}
 	@RequestMapping(value="/administrador", method=RequestMethod.GET)
-	public String administrador(Model model,HttpSession sesion) {
+	public String administrador(@RequestParam(value="info",required=false,defaultValue="") String info,Model model,HttpSession sesion) {
 		if(sesion.getAttribute("usuLogeado")==null) {
 			return "redirect:/";
 		}
+		model.addAttribute("info",info);
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		model.addAttribute("listaUsuarios",usuariosDao.listarUsuarios());	
 		return "administrador";
@@ -168,7 +203,10 @@ public class UsuarioController {
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		int id=Integer.parseInt(request.getParameter("idUsuario"));		
-		
+		Usuarios usu= usuariosDao.usuarioPorId(id);
+		if(usu.getTipoUsuario()==3) {
+			return "redirect:/administrador?info=Imposible borrar mientras juege en el torneo activo";
+		}
 		usuariosDao.borrarUsuario(id);
 		return "redirect:/administrador";
 	}
@@ -179,6 +217,7 @@ public class UsuarioController {
 			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("info",info);
+		sesion.setAttribute("usuEditar",((Usuarios)sesion.getAttribute("usuLogeado")).getNombre());
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("editarPerfilAdmin","usuario",sesion.getAttribute("usuLogeado"));
 	}
@@ -189,14 +228,17 @@ public class UsuarioController {
 			return "redirect:/";
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		if (!sesion.getAttribute("usuEditar").equals(usu.getNombre())) {
+			if (usuariosDao.validarUsuario(usu)) {
+
+				return "redirect:/editarAdmin?info=No se ha podido editar, nombre en uso";
+			}
+		}
 		usuariosDao.Editar(usu.getIdUsuario(),usu.getNombre(),usu.getEmail(),usu.getTelefono(),1);
 		sesion.setAttribute("usuLogeado", usu);
-		if (usuariosDao.validarUsuario(usu)) {
-			
-		    return "redirect:/editarAdmin?info=Usuario Editado";
-		}else {
-		  return "redirect:/editarAdmin";
-		}
+		
+		  return "redirect:/editarAdmin?info=Usuario editado";
+		
 	}
 	
 	
@@ -206,14 +248,17 @@ public class UsuarioController {
 			return "redirect:/";
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		if (!sesion.getAttribute("usuEditar").equals(usu.getNombre())) {
+			if (usuariosDao.validarUsuario(usu)) {
+
+				return "redirect:/editar?info=No se ha podido editar, nombre en uso";
+			}
+		}
 		usuariosDao.Editar(usu.getIdUsuario(),usu.getNombre(),usu.getEmail(),usu.getTelefono(),2);
 		sesion.setAttribute("usuLogeado", usu);
-		if (usuariosDao.validarUsuario(usu)) {
-			
-		    return "redirect:/editar?info=Usuario Editado";
-		}else {
-		  return "redirect:/editar";
-		}
+		
+		  return "redirect:/editar?info=Usuario Editado";
+		
 	}
 	
 	
@@ -223,6 +268,7 @@ public class UsuarioController {
 			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("info",info);
+		sesion.setAttribute("usuEditar",((Usuarios)sesion.getAttribute("usuLogeado")).getNombre());
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		return new ModelAndView("editarPerfil","usuario",sesion.getAttribute("usuLogeado"));
 	}
@@ -232,8 +278,10 @@ public class UsuarioController {
 			return new ModelAndView("redirect:/","usuario",new Usuarios());
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
+		
 		int id=Integer.parseInt(request.getParameter("idUsuario"));		
 		Usuarios usu=usuariosDao.usuarioPorId(id);
+		sesion.setAttribute("usuEditar",usu.getNombre());
 		return new ModelAndView("editarOtroPerfil","usuario",usu);
 	}
 	
@@ -243,13 +291,16 @@ public class UsuarioController {
 			return "redirect:/";
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
-		usuariosDao.Editar(usuario.getIdUsuario(),usuario.getNombre(),usuario.getEmail(),usuario.getTelefono(),usuario.getTipoUsuario());
-		if (!usuariosDao.validarUsuario(usuario)) {
-			
-		    return "redirect:/administrador";
-		}else {
-		  return "redirect:/administrador";
+		
+		if (!sesion.getAttribute("usuEditar").equals(usuario.getNombre())) {
+			if (usuariosDao.validarUsuario(usuario)) {
+
+				return "redirect:/administrador?info=No se ha podido editar, nombre en uso";
+			}
 		}
+		usuariosDao.Editar(usuario.getIdUsuario(),usuario.getNombre(),usuario.getEmail(),usuario.getTelefono(),usuario.getTipoUsuario());
+		  return "redirect:/administrador?info=Usuario editado";
+		
 	}
 	
 }

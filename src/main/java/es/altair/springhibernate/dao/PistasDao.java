@@ -14,6 +14,10 @@ public interface PistasDao {
 
 	void borrarPista(int id);
 
+	String pistaPorId(int parseInt);
+
+
+
 	
 
 }

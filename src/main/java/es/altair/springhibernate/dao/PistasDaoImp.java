@@ -65,4 +65,14 @@ private SessionFactory sessionFactory;
 		sesion.createQuery("delete from Pistas where idPista=:i").setParameter("i", id).executeUpdate();		
 		
 	}
+
+	@Override
+	@Transactional
+	public String pistaPorId(int parseInt) {
+		Session sesion=sessionFactory.getCurrentSession();
+		String nombre="";
+		nombre=(String) sesion.createQuery("select nombre from Pistas where idPista=:i").setParameter("i", parseInt).uniqueResult();
+		
+		return nombre;
+	}
 }

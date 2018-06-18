@@ -29,4 +29,10 @@ public interface UsuariosDao {
 
 
 	List<Usuarios> listarUsuariosJugadores();
+
+
+	void EditarClave(int idUsuario, String clave);
+
+
+	void editarAsistir(Usuarios idJugador1);
 }

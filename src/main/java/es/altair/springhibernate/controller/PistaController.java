@@ -1,5 +1,8 @@
 package es.altair.springhibernate.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.altair.springhibernate.bean.Partidos;
 import es.altair.springhibernate.bean.Pistas;
+import es.altair.springhibernate.dao.PartidosDao;
 import es.altair.springhibernate.dao.PistasDao;
 @Controller
 public class PistaController {
 	@Autowired
 	private PistasDao pistasDao;
+	@Autowired
+	private PartidosDao partidosDao;
 	
 	@RequestMapping(value="/gestionPistas", method=RequestMethod.GET)
 	public ModelAndView gestionPistas(@RequestParam(value="info",required=false,defaultValue="")String info,Model model,HttpSession sesion) {
@@ -63,7 +70,11 @@ public class PistaController {
 		}
 		model.addAttribute("usuLogeado",sesion.getAttribute("usuLogeado"));
 		int id=Integer.parseInt(request.getParameter("idPista"));		
-		
+		List<Partidos> partidos=new ArrayList<Partidos>();
+		partidos = partidosDao.partidosPorIdpista(id);
+		if(partidos.size()>0) {
+			return "redirect:/gestionPistas?info=Imposible borrar porque en el torneo activo existen partidos en esa pista.";
+		}
 		pistasDao.borrarPista(id);
 		return "redirect:/gestionPistas";
 	}

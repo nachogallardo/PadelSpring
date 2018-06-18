@@ -95,10 +95,13 @@ public class TorneoController {
 				partidosDao.borrarPartidos();
 				List<Usuarios> todosUsuarios = usuariosDao.listarUsuarios();
 				for (Usuarios usuarios : todosUsuarios) {
+					usuarios.setAsistir(0);
 					if(usuarios.getTipoUsuario()==1)
 						continue;
-					else
+					else {
+					usuariosDao.editarAsistir(usuarios);
 					usuariosDao.Editar(usuarios.getIdUsuario(), usuarios.getNombre(), usuarios.getEmail(), usuarios.getTelefono(), 2);
+					}
 				}
 				Torneo t1=torneoDao.torneoPorNombre(torneo.getNombre());
 				sesion.setAttribute("torneo", t1);
@@ -106,6 +109,8 @@ public class TorneoController {
 					int idUsuario=Integer.parseInt(id);
 					Usuarios usu = usuariosDao.usuarioPorId(idUsuario);
 					usu.setTipoUsuario(3);
+					usu.setAsistir(1);
+					usuariosDao.editarAsistir(usu);
 					usuPartidos.add(usu);
 					usuariosDao.Editar(usu.getIdUsuario(), usu.getNombre(), usu.getEmail(), usu.getTelefono(), usu.getTipoUsuario());
 					Clasificacion clasificacion = new Clasificacion(0, 0, t1, usu);

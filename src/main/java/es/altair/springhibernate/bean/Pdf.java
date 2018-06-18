@@ -3,9 +3,7 @@ package es.altair.springhibernate.bean;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -24,20 +22,21 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+
 public class Pdf {
 	
 	 public void writePDF(List<PagosString> pagos) throws FileNotFoundException, DocumentException {
 		// Se crea el documento
 		 Document documento = new Document();
+		 String home = System.getProperty("user.name");
+		 
 
-		java.io.File dir = new File("C://pagosPDF");
-		dir.mkdir(); 
 		Date fecha = new Date();
 		System.out.println(fecha.toString());
 		String nombrePago="pago"+fecha.getTime();
 		 // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
-		 FileOutputStream ficheroPdf = new FileOutputStream("c://pagosPDF//"+nombrePago+".pdf");
-
+		FileOutputStream ficheroPdf = new FileOutputStream("/Users/"+home+"/Downloads/" + nombrePago + ".pdf");
+		
 		 // Se asocia el documento al OutputStream y se indica que el espaciado entre
 		 // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
 		 PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);

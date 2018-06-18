@@ -58,7 +58,7 @@ private SessionFactory sessionFactory;
 	public void EditarPartido(int idPartido,int idPista,Date fecha) {
 		Session sesion=sessionFactory.getCurrentSession();
 
-		sesion.createSQLQuery("UPDATE Partidos SET idPista=:p,fechaPartido=:f  where idPartido=:id " )
+		sesion.createQuery("UPDATE Partidos SET idPista=:p,fechaPartido=:f  where idPartido=:id " )
 					.setParameter("p", idPista)
 					.setParameter("f", fecha)
 					.setParameter("id", idPartido)
@@ -97,8 +97,26 @@ private SessionFactory sessionFactory;
 	public int sacarNumeroJornada() {
 		Session sesion=sessionFactory.getCurrentSession();
 		int num=0;
-		num=(int) sesion.createQuery("select max(numJornada) from Partidos").uniqueResult();
+		num=(Integer) sesion.createQuery("select max(numJornada) from Partidos").uniqueResult();
 		return num;
+	}
+
+	@Override
+	@Transactional
+	public List<Partidos> listarPartidosConGanador() {
+		Session sesion=sessionFactory.getCurrentSession();
+		List<Partidos> partidos= new ArrayList<Partidos>();
+		partidos=sesion.createQuery("from Partidos where idGanador1 > 0").list();
+		return partidos;
+	}
+
+	@Override
+	@Transactional
+	public List<Partidos> partidosPorIdpista(int id) {
+		Session sesion=sessionFactory.getCurrentSession();
+		List<Partidos> partidos= new ArrayList<Partidos>();
+		partidos=sesion.createQuery("from Partidos where idPista = :p").setParameter("p", id).list();
+		return partidos;
 	}
 	
 }

@@ -35,7 +35,7 @@ private SessionFactory sessionFactory;
 		Session sesion=sessionFactory.getCurrentSession();
 		List<Clasificacion> clasificacion = new ArrayList<Clasificacion>();
 		Torneo t1 = (Torneo)attribute;
-		 clasificacion=sesion.createQuery("from Clasificacion where torneo =:i").setParameter("i", t1).list();
+		 clasificacion=sesion.createQuery("from Clasificacion where torneo =:i order by puntos desc").setParameter("i", t1).list();
 		return clasificacion;
 	}
 	@Override
@@ -64,7 +64,7 @@ private SessionFactory sessionFactory;
 		Session sesion=sessionFactory.getCurrentSession();
 		System.out.println(idJugador1.getIdUsuario());
 		int partJugados=0;
-		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador1.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados = (Integer) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador1.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
 		partJugados++;
 		System.out.println(partJugados);
 		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
@@ -72,21 +72,21 @@ private SessionFactory sessionFactory;
 					.setParameter("t", t.getIdTorneo())
 					.setParameter("i", idJugador1.getIdUsuario())
 					.executeUpdate();
-		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador2.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados = (Integer) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador2.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
 		partJugados++;
 		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
 					.setParameter("p", partJugados)
 					.setParameter("t", t.getIdTorneo())
 					.setParameter("i", idJugador2.getIdUsuario())
 					.executeUpdate();
-		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador3.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados = (Integer) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador3.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
 		partJugados++;
 		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
 					.setParameter("p", partJugados)
 					.setParameter("t", t.getIdTorneo())
 					.setParameter("i", idJugador3.getIdUsuario())
 					.executeUpdate();
-		partJugados = (int) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador4.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
+		partJugados = (Integer) sesion.createSQLQuery("select partJugados from clasificacion where idUsuario=:i and idTorneo=:t").setParameter("i",idJugador4.getIdUsuario() ).setParameter("t", t.getIdTorneo()).uniqueResult();
 		partJugados++;
 		sesion.createSQLQuery("UPDATE clasificacion SET partJugados=:p where idUsuario=:i and idTorneo=:t" )
 					.setParameter("p", partJugados)

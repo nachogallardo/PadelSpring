@@ -19,6 +19,7 @@ function cambiar(event) {
 		 document.getElementById("ganador2").value=document.getElementById("4jugador").value;
 	 }
 }
+
 </script>
 
 <style>
@@ -199,44 +200,41 @@ function cambiar(event) {
 								</div>
 							</div>
 							<div class="card-body p-3">
-							<c:choose>
-								<c:when test="${info!='' }">
-									<div style="color: black;"
-										class="alert alert-warning alert-dismissable">
-										<button type="button" class="close" data-dismiss="alert"
-											aria-hidden="true">x</button>
-										<strong>Info!</strong> ${info }
-									</div>
-								</c:when>
-							</c:choose>
-							<c:url value="/addPista" var="addPista"></c:url>
-							<f:form role="form" method="POST" action="${addPista }"
+							<c:url value="/modificarFechaPista" var="editFechaPista"></c:url>
+							<f:form role="form" method="POST" action="${editFechaPista }"
 								commandName="partido" class="form-check">
+								<input type="number" value="${partido.getPista().getIdPista()}" style="display: none;" name="pista1"
+						name="idPista"  />
 								<div class="form-group">
+								<label style="margin-right: 3px;">Fecha: </label>
 									<div class="input-group">
 										<div class="well">
 											<div id="datetimepicker1" class="input-append date">
-												<input data-format="dd/MM/yyyy" type="date"></input>
-												
+											
+												<input name="fechaPartido" value="${partido.getFechaPartido().getYear() + 1900}-${String.format('%02d', partido.getFechaPartido().getMonth()+1)}-${String.format('%02d', partido.getFechaPartido().getDate())}T${String.format('%02d', partido.getFechaPartido().getHours())}:${String.format('%02d', partido.getFechaPartido().getMinutes())}"  type="datetime-local"/>						
 											</div>
 										</div>
 									</div>
 								</div>
+								<div class="form-group">
+									<div class="input-group">
+									<label style="margin-right: 3px;">Pista: </label>
 								<select name="pistas">
 									<c:forEach items="${pistas}" var="pista">
 										<c:choose>
-											<c:when test="${pista.getNombre()} == ${partido.getPista()}">
-												<option selected="sel" value="pista.getIdpista()">olele</option>
+											<c:when test="${pista.getNombre()==partido.getPista().getNombre()}">
+												<option selected="sel" value="${pista.getIdPista()}">${pista.getNombre()}</option>
 											</c:when>
 											<c:otherwise>
-												<option value="pista.getIdpista()">${pista.getNombre()}</option>
+												<option value="${pista.getIdPista()}">${pista.getNombre()}</option>
 											</c:otherwise>
 										</c:choose>
 									</c:forEach>
 								</select>
-								<button type="submit" id="btnRegistrar"
+								</div></div>
+								<button type="submit" id="btnEditar"
 									class="btn btn-primary btn-block rounded-0 py-2">
-									<i class="fa fa-plus-circle" aria-hidden="true"></i> Crear
+									 Editar
 								</button>
 							</f:form>
 						</div>
@@ -273,24 +271,56 @@ function cambiar(event) {
 									<div class="input-group">
 										<div class="form-group">
 											<div class="input-group mb-2 mb-sm-0">
-											<div class="card">
+											<div class="col-5">
+											<div class="card" style="padding: 2px;">
 												<input type="radio" required="required" onchange="cambiar(this)" name="tipode" id="ganadores1"
-													value="1"  /> ${partido.idJugador1.nombre } y ${partido.idJugador2.nombre } <br>
+													value="1"  /> ${partido.idJugador1.nombre }  ${partido.idJugador2.nombre } <br>
 											</div>
-											
-											<div class="card">
+											</div>
+											<div class="col-2"></div>
+											<div class="col-5">
+											<div class="card" style="padding: 2px;">
 												<input type="radio" required="required" onchange="cambiar(this)" name="tipode" id="ganadores2" value="2"
-													 /> ${partido.idJugador3.nombre } y ${partido.idJugador4.nombre }
+													 /> ${partido.idJugador3.nombre }  ${partido.idJugador4.nombre }
+											</div>
 											</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<button type="submit" id="btnRegistrar"
+								<a data-toggle="modal" data-target="#actualizar">
+								<button id="btnRegistrar"
 									class="btn btn-primary btn-block rounded-0 py-2">
 									 Elegir Ganadores
 								</button>
+								</a>
+								<div class="modal fade"
+											id="actualizar" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Ganadores</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">Si eliges los ganadores se cerrara el partido y se actualizará la clasificacion.¿Estás seguro?</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary"
+															data-dismiss="modal">No</button>
+														<button type="submit" class="btn btn-primary"
+															>Sí</button>
+													</div>
+												</div>
+											</div>
+										</div>
+								
+								
 							</f:form>
+							
 						</div>
 						</div>
 					</div>
@@ -311,6 +341,14 @@ function cambiar(event) {
 	<script src="<c:url value="/resources/js/bootstrap-datepicker.js"/>"></script>
 	<script src="<c:url value="/resources/js/custom.js"/>"></script>
 	<script>
+	$(document).ready(function(){
+		$("select[name=pistas]").change(function(){
+			$('input[name=pista1]').val($(this).val());
+	            
+	        });
+		
+	});
+	
 		window.onload = function() {
 			$('#datetimepicker').data("DateTimePicker").FUNCTION()
 			var chart1 = document.getElementById("line-chart").getContext("2d");

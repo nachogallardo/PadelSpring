@@ -80,7 +80,7 @@ public class UsuariosDaoImp implements UsuariosDao {
 		List<Usuarios> usuarios= new ArrayList<Usuarios>();
 		Session sesion=sessionFactory.getCurrentSession();
 
-		usuarios= sesion.createQuery("from Usuarios").list();
+		usuarios= sesion.createQuery("from Usuarios where not tipoUsuario=10").list();
 		return usuarios;
 	}
 
@@ -88,7 +88,7 @@ public class UsuariosDaoImp implements UsuariosDao {
 	@Transactional
 	public void borrarUsuario(int idUsuario) {
 		Session sesion=sessionFactory.getCurrentSession();
-		sesion.createQuery("delete from Usuarios where idUsuario=:i").setParameter("i", idUsuario).executeUpdate();		
+		sesion.createQuery("update Usuarios set tipoUsuario=10 where idUsuario=:i").setParameter("i", idUsuario).executeUpdate();		
 	}
 
 	@Override
@@ -117,11 +117,11 @@ public class UsuariosDaoImp implements UsuariosDao {
 		usu.setTipoUsuario(2);
 		Session sesion=sessionFactory.getCurrentSession();
 
-		filas = sesion.createSQLQuery("INSERT INTO usuarios (nombre, email, tipoUsuario, contrasenia, telefono)"
-							+ "values (:n, :e,:tipo, AES_ENCRYPT(:p, :passphrase), :t)")
+		filas = sesion.createSQLQuery("INSERT INTO usuarios (nombre, email, tipoUsuario, contrasenia, telefono, asistir)"
+							+ "values (:n, :e,:tipo, AES_ENCRYPT(:p, :passphrase), :t,:a)")
 					.setParameter("n", usu.getNombre()).setParameter("p", usu.getContrasenia())
 					.setParameter("passphrase", pass).setParameter("e", usu.getEmail())
-					.setParameter("t", usu.getTelefono()).setParameter("tipo", usu.getTipoUsuario()).executeUpdate();
+					.setParameter("t", usu.getTelefono()).setParameter("tipo", usu.getTipoUsuario()).setParameter("a", usu.getAsistir()).executeUpdate();
 		return filas;
 	}
 	@Override
@@ -142,5 +142,26 @@ public class UsuariosDaoImp implements UsuariosDao {
 
 		usuarios= sesion.createQuery("from Usuarios where tipoUsuario=3").list();
 		return usuarios;
+	}
+	@Override
+	@Transactional
+	public void EditarClave(int idUsuario, String clave) {
+		Session sesion=sessionFactory.getCurrentSession();
+
+		sesion.createQuery("UPDATE Usuarios SET contrasenia=AES_ENCRYPT(:p, :passphrase) where idUsuario=:i " )
+					.setParameter("p", clave)
+					.setParameter("passphrase", pass)
+					.setParameter("i", idUsuario)
+					.executeUpdate();	
+	}
+	@Override
+	@Transactional
+	public void editarAsistir(Usuarios idJugador1) {
+		Session sesion=sessionFactory.getCurrentSession();
+		sesion.createQuery("UPDATE Usuarios SET asistir=:a where idUsuario=:i " )
+		.setParameter("a", idJugador1.getAsistir())
+		.setParameter("i", idJugador1.getIdUsuario())
+		.executeUpdate();	
+		
 	}
 }

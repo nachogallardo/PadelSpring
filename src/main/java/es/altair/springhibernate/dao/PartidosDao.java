@@ -25,4 +25,8 @@ public interface PartidosDao {
 	List<Partidos> listarPartidosSinGanador();
 
 	int sacarNumeroJornada();
+
+	List<Partidos> listarPartidosConGanador();
+
+	List<Partidos> partidosPorIdpista(int id);
 }
