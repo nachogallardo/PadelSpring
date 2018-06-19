@@ -155,6 +155,11 @@
 												<b>${u.telefono }</b>
 											</h4> <a href="#"> ${u.email }</a>
 										</td>
+										<c:choose>
+								<c:when test="${u.nombre=='administrador'}">
+								</c:when>
+								
+								<c:otherwise>
 										<td>
 										<a data-toggle="modal" data-target="#borrarUsuario${u.idUsuario }">
 												<button class="btn btn-outline-danger" value="left"
@@ -169,8 +174,8 @@
 													<i class="fa fa-fw fa-cog"></i>Configurar
 												</button>
 										</a></td>
-
-
+</c:otherwise>
+</c:choose>
 
 										<div class="modal fade"
 											id="borrarUsuario${u.idUsuario }" tabindex="-1"
